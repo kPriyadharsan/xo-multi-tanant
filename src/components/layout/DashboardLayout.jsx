@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import NotificationPanel from './NotificationPanel';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Bell, Search, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import useNotificationStore from '../../store/useNotificationStore';
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
   const { user } = useAuth();
+  const { notifications } = useNotificationStore();
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -40,16 +45,25 @@ const DashboardLayout = () => {
             </div>
             
             <div className="flex items-center gap-4 text-slate-400">
-              <button className="relative hover:text-indigo-600 transition-colors">
-                <Bell size={20} />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-pink-500 rounded-full border-2 border-white" />
+              <button 
+                className="relative hover:text-indigo-600 transition-colors p-2"
+                onClick={() => setIsNotifOpen(true)}
+              >
+                <Bell size={22} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-pink-500 text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white font-bold">
+                    {unreadCount}
+                  </span>
+                )}
               </button>
-              <button className="hover:text-indigo-600 transition-colors">
-                <Settings size={20} />
+              <button className="hover:text-indigo-600 transition-colors p-2">
+                <Settings size={22} />
               </button>
             </div>
           </div>
         </header>
+
+        <NotificationPanel isOpen={isNotifOpen} onClose={() => setIsNotifOpen(false)} />
 
         {/* Content Area */}
         <section className="p-8 max-w-[1600px] mx-auto">

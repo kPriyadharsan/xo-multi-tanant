@@ -6,7 +6,8 @@ import {
   MessageSquare, 
   MoreHorizontal,
   Flag,
-  Tag
+  Tag,
+  Users
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 

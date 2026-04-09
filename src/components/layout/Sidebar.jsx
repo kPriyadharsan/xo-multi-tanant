@@ -19,8 +19,8 @@ const Sidebar = ({ isOpen, toggle }) => {
   const navItems = [
     { icon: LayoutDashboard, label: 'Overview', path: '/dashboard' },
     { icon: CheckSquare, label: 'My Tasks', path: '/dashboard/tasks' },
-    { icon: BarChart3, label: 'Analytics', path: '/dashboard/analytics' },
-    { icon: Users, label: 'Team', path: '/dashboard/team' },
+    { icon: BarChart3, label: 'Activity', path: '/dashboard/activity' },
+    { icon: Users, label: 'Profile', path: '/dashboard/profile' },
     { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
   ];
 

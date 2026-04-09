@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Layout, AlignLeft, Flag, Tag, Users as UsersIcon } from 'lucide-react';
+import { X, Layout, AlignLeft, Flag, Tag, Users as UsersIcon, Sparkles, Loader2 } from 'lucide-react';
 import { Button, Input, Card } from '../ui';
+import { generateTaskAI } from '../../api/aiService';
+import toast from 'react-hot-toast';
 
 const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,33 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
   });
   
   const [tagInput, setTagInput] = useState('');
+  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  const handleAiGenerate = async () => {
+    if (!formData.title && !formData.description) {
+        toast.error("Please provide a title or brief description for the AI to work with.");
+        return;
+    }
+    
+    setIsAiLoading(true);
+    const loadingToast = toast.loading("Gemini AI is crafting your task...");
+    
+    try {
+        const result = await generateTaskAI(formData.title || formData.description);
+        setFormData({
+            ...formData,
+            title: result.title || formData.title,
+            description: result.description || formData.description,
+            priority: result.priority || formData.priority,
+            tags: [...new Set([...formData.tags, ...(result.tags || [])])]
+        });
+        toast.success("Task enhanced by AI!", { id: loadingToast });
+    } catch (err) {
+        toast.error("AI enhancement failed. Please try again.", { id: loadingToast });
+    } finally {
+        setIsAiLoading(false);
+    }
+  };
 
   const handleAddTag = (e) => {
     if (e.key === 'Enter' && tagInput.trim()) {
@@ -53,9 +82,20 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
             </div>
             <h2 className="text-xl font-bold text-slate-900">Create New Task</h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
-            <X size={20} className="text-slate-400" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+                type="button"
+                onClick={handleAiGenerate}
+                disabled={isAiLoading}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl text-xs font-bold hover:bg-indigo-100 transition-all disabled:opacity-50"
+            >
+                {isAiLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                Generate with AI
+            </button>
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                <X size={20} className="text-slate-400" />
+            </button>
+          </div>
         </div>
 
         <form onSubmit={(e) => { e.preventDefault(); onSave(formData); onClose(); }} className="p-8">
