@@ -39,7 +39,7 @@ const TaskCard = ({ task, onUpdateStatus }) => {
       }`}>
         <div className="flex justify-between items-start mb-3">
           <div className="flex flex-wrap gap-2">
-            {task.tags.map(tag => (
+            {task.tags?.map(tag => (
               <span key={tag} className="px-2 py-0.5 rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 uppercase flex items-center gap-1">
                 <Tag size={8} /> {tag}
               </span>
@@ -54,7 +54,7 @@ const TaskCard = ({ task, onUpdateStatus }) => {
         <p className="text-sm text-slate-500 line-clamp-2 mb-4">{task.description}</p>
 
         {/* Task Progress (Subtasks) */}
-        {task.subtasks.length > 0 && (
+        {task.subtasks?.length > 0 && (
           <div className="mb-4">
             <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 mb-1.5 uppercase">
               <span>Progress</span>
@@ -78,10 +78,10 @@ const TaskCard = ({ task, onUpdateStatus }) => {
           </div>
 
           <div className="flex -space-x-2">
-            {task.assignedTo.length > 0 ? (
-              task.assignedTo.map((name, i) => (
-                <div key={i} className="w-7 h-7 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600" title={name}>
-                  {name[0]}
+            {task.assignedTo?.length > 0 ? (
+              task.assignedTo.map((user, i) => (
+                <div key={user._id || i} className="w-7 h-7 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600" title={user.name || 'User'}>
+                  {(user.name?.[0] || 'U').toUpperCase()}
                 </div>
               ))
             ) : (

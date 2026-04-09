@@ -7,14 +7,23 @@ const jwt = require('jsonwebtoken');
 // @access  Public
 const register = async (req, res, next) => {
   try {
-    const { name, email, password, organizationName } = req.body;
+    const { name, email, password, organizationName, organization: organizationAlias } = req.body;
+    const finalOrgName = organizationName || organizationAlias;
+
+    // Validate required fields
+    if (!name || !email || !password || !finalOrgName) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Please provide name, email, password, and organization name' 
+      });
+    }
 
     // Check if organization exists or create new one
-    let organization = await Organization.findOne({ name: organizationName });
+    let organization = await Organization.findOne({ name: finalOrgName });
     if (!organization) {
       organization = await Organization.create({
-        name: organizationName,
-        slug: organizationName.toLowerCase().split(' ').join('-')
+        name: finalOrgName,
+        slug: finalOrgName.toLowerCase().split(' ').join('-')
       });
     }
 

@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import OverviewStats from '../components/dashboard/OverviewStats';
 import TaskCharts from '../components/dashboard/TaskCharts';
 import { Card, Button } from '../components/ui';
 import { Plus, ArrowUpRight, Clock, CheckCircle2 } from 'lucide-react';
 import useTaskStore from '../store/useTaskStore';
+import useLogStore from '../store/useLogStore';
+import { useAuth } from '../context/AuthContext';
 
 const DashboardOverview = () => {
-  const { tasks } = useTaskStore();
+  const { tasks, fetchTasks } = useTaskStore();
+  const { logs, fetchLogs } = useLogStore();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    fetchTasks();
+    fetchLogs();
+  }, []);
+
   const recentTasks = tasks.slice(0, 5);
 
   return (
@@ -14,7 +24,7 @@ const DashboardOverview = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Overview</h1>
-          <p className="text-slate-500 mt-1">Here's what's happening in your organization today.</p>
+          <p className="text-slate-500 mt-1">Here's what's happening in <span className="text-indigo-600 font-bold">{user?.organization?.name || 'your organization'}</span> today.</p>
         </div>
         <div className="flex gap-3">
           <Button variant="secondary" className="hidden sm:flex items-center gap-2">
@@ -70,28 +80,26 @@ const DashboardOverview = () => {
           </div>
         </Card>
 
-        {/* Team Activity */}
         <Card className="p-8 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           <h3 className="text-lg font-bold text-slate-800 mb-8">Team Activity</h3>
           <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
-            {[
-              { user: 'Sarah Miller', action: 'completed', task: 'Design System', time: '2h ago' },
-              { user: 'James Wilson', action: 'added', task: 'API Documentation', time: '4h ago' },
-              { user: 'Emily Brown', action: 'started', task: 'Mobile UI Kit', time: 'Yesterday' }
-            ].map((activity, i) => (
-              <div key={i} className="flex items-start gap-4 relative">
+            {logs.length > 0 ? logs.slice(0, 5).map((activity, i) => (
+              <div key={activity._id || i} className="flex items-start gap-4 relative">
                 <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold z-10 border-4 border-white">
-                  {activity.user[0]}
+                  {(activity.user?.name?.[0] || 'U').toUpperCase()}
                 </div>
                 <div>
                    <p className="text-xs text-slate-500 leading-tight">
-                      <span className="font-bold text-slate-900">{activity.user}</span> {activity.action} 
-                      <span className="font-bold text-indigo-600"> {activity.task}</span>
+                      <span className="font-bold text-slate-900">{activity.user?.name || 'Unknown'}</span> 
+                      {activity.action.toLowerCase().replace('_', ' ')} 
+                      <span className="font-bold text-indigo-600"> {activity.details.split(': ')[1] || activity.details}</span>
                    </p>
-                   <p className="text-[10px] text-slate-400 mt-1">{activity.time}</p>
+                   <p className="text-[10px] text-slate-400 mt-1">{new Date(activity.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
-            ))}
+            )) : (
+              <p className="text-sm text-slate-400 text-center py-4">No recent activity</p>
+            )}
           </div>
           <Button variant="secondary" className="w-full mt-10">View Log</Button>
         </Card>

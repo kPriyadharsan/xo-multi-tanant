@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
     ref: 'Organization',
     required: true
   },
+  refreshToken: String,
   createdAt: {
     type: Date,
     default: Date.now

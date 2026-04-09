@@ -46,7 +46,7 @@ const ProfilePage = () => {
             <p className="text-sm text-slate-500 mt-1">{user?.email}</p>
             
             <div className="mt-6 flex flex-wrap justify-center gap-2">
-               <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Admin</span>
+               <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-[10px] font-bold uppercase tracking-wider">{user?.role || 'Member'}</span>
                <span className="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[10px] font-bold uppercase tracking-wider">Product Team</span>
             </div>
 
@@ -55,7 +55,7 @@ const ProfilePage = () => {
             <div className="w-full space-y-4">
                <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-400 flex items-center gap-2"><Building size={16} /> Organization</span>
-                  <span className="font-bold text-slate-700">{user?.tenantId}</span>
+                  <span className="font-bold text-slate-700">{user?.organization?.name || 'Private'}</span>
                </div>
                <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-400 flex items-center gap-2"><Globe size={16} /> Timezone</span>

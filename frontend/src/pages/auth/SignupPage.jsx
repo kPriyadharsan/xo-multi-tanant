@@ -27,7 +27,7 @@ const SignupPage = () => {
       login(data.user, data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Signup failed. Please try again.');
+      setError(err.response?.data?.message || 'Signup failed. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -19,16 +19,25 @@ import useTaskStore from '../../store/useTaskStore';
 const TaskCharts = () => {
   const { tasks } = useTaskStore();
 
-  // Mock data based on real task counts
-  const data = [
-    { name: 'Mon', tasks: 4 },
-    { name: 'Tue', tasks: 7 },
-    { name: 'Wed', tasks: 5 },
-    { name: 'Thu', tasks: 8 },
-    { name: 'Fri', tasks: 12 },
-    { name: 'Sat', tasks: 6 },
-    { name: 'Sun', tasks: 3 },
-  ];
+  // Calculate activity data from real tasks
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const last7Days = [...Array(7)].map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    return { 
+      day: days[d.getDay()], 
+      date: d.toISOString().split('T')[0],
+      count: 0 
+    };
+  }).reverse();
+
+  tasks.forEach(task => {
+    const taskDate = new Date(task.createdAt).toISOString().split('T')[0];
+    const dayData = last7Days.find(d => d.date === taskDate);
+    if (dayData) dayData.count++;
+  });
+
+  const data = last7Days.map(d => ({ name: d.day, tasks: d.count }));
 
   const statusData = [
     { name: 'Completed', value: tasks.filter(t => t.status === 'completed').length, color: '#10b981' },

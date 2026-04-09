@@ -16,33 +16,26 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Mock API responses for development
-const mockDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
+// Real API services
 export const authApi = {
   login: async (credentials) => {
-    // Simulate API call
-    await mockDelay(1000);
-    if (credentials.email === 'admin@demo.com' && credentials.password === 'password') {
-      return {
-        data: {
-          user: { id: 1, name: 'Admin User', email: credentials.email, tenantId: 'tenant-1' },
-          token: 'mock-jwt-token-xyz'
-        }
-      };
-    }
-    throw new Error('Invalid credentials');
+    return api.post('/auth/login', credentials);
   },
   
   signup: async (userData) => {
-    await mockDelay(1000);
-    return {
-      data: {
-        user: { id: Date.now(), ...userData, tenantId: `tenant-${Date.now()}` },
-        token: 'mock-jwt-token-new'
-      }
-    };
+    return api.post('/auth/register', userData);
   }
+};
+
+export const taskApi = {
+  getAll: () => api.get('/tasks'),
+  create: (taskData) => api.post('/tasks', taskData),
+  update: (id, taskData) => api.put(`/tasks/${id}`, taskData),
+  delete: (id) => api.delete(`/tasks/${id}`)
+};
+
+export const logApi = {
+  getAll: () => api.get('/logs')
 };
 
 export default api;

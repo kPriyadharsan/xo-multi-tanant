@@ -1,0 +1,154 @@
+const Task = require('../models/Task');
+const logActivity = require('../utils/logger');
+
+// @desc    Get all tasks for user/organization
+// @route   GET /api/tasks
+// @access  Private
+const getTasks = async (req, res, next) => {
+  try {
+    let query;
+
+    // Organization filter (Strict Isolation)
+    if (req.user.role === 'admin') {
+      // Admin sees everything in org
+      query = Task.find({ organization: req.user.organization }).populate('assignedTo');
+    } else {
+      // Member sees only their tasks (assigned or created)
+      query = Task.find({
+        organization: req.user.organization,
+        $or: [
+          { assignedTo: req.user.id },
+          { createdBy: req.user.id }
+        ]
+      }).populate('assignedTo');
+    }
+
+    const tasks = await query;
+
+    res.status(200).json({
+      success: true,
+      count: tasks.length,
+      data: tasks
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @desc    Create new task
+// @route   POST /api/tasks
+// @access  Private
+const createTask = async (req, res, next) => {
+  try {
+    req.body.organization = req.user.organization;
+    req.body.createdBy = req.user.id;
+
+    const task = await Task.create(req.body);
+
+    await logActivity({
+      action: 'CREATED_TASK',
+      user: req.user.id,
+      organization: req.user.organization,
+      targetType: 'Task',
+      targetId: task._id,
+      details: `Created task: ${task.title}`
+    });
+
+    res.status(201).json({
+      success: true,
+      data: task
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @desc    Update task
+// @route   PUT /api/tasks/:id
+// @access  Private
+const updateTask = async (req, res, next) => {
+  try {
+    let task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    // RBAC: Check ownership or admin status
+    if (task.organization.toString() !== req.user.organization.toString()) {
+      return res.status(401).json({ message: 'Not authorized for this organization' });
+    }
+
+    if (req.user.role !== 'admin' && task.createdBy.toString() !== req.user.id.toString()) {
+       return res.status(401).json({ message: 'Not authorized to update this task' });
+    }
+
+    task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    await logActivity({
+        action: 'UPDATED_TASK',
+        user: req.user.id,
+        organization: req.user.organization,
+        targetType: 'Task',
+        targetId: task._id,
+        details: `Updated task: ${task.title}`
+    });
+
+    res.status(200).json({
+      success: true,
+      data: task
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @desc    Delete task
+// @route   DELETE /api/tasks/:id
+// @access  Private
+const deleteTask = async (req, res, next) => {
+  try {
+    const task = await Task.findById(req.params.id);
+
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    // RBAC check
+    if (task.organization.toString() !== req.user.organization.toString()) {
+      return res.status(401).json({ message: 'Not authorized for this organization' });
+    }
+
+    if (req.user.role !== 'admin' && task.createdBy.toString() !== req.user.id.toString()) {
+      return res.status(401).json({ message: 'Not authorized to delete this task' });
+    }
+
+    await task.deleteOne();
+
+    await logActivity({
+        action: 'DELETED_TASK',
+        user: req.user.id,
+        organization: req.user.organization,
+        targetType: 'Task',
+        targetId: task._id,
+        details: `Deleted task: ${task.title}`
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {}
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask
+};

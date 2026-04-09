@@ -1,62 +1,65 @@
 import { create } from 'zustand';
+import { taskApi } from '../api/apiClient';
+import toast from 'react-hot-toast';
 
-const useTaskStore = create((set) => ({
-  tasks: [
-    { 
-      id: '1', 
-      title: 'Initialize repository', 
-      description: 'Set up the base project structure', 
-      status: 'completed', 
-      priority: 'high', 
-      tags: ['setup'],
-      subtasks: [{ id: 's1', title: 'git init', completed: true }],
-      assignedTo: ['Admin'],
-      createdAt: new Date().toISOString()
-    },
-    { 
-      id: '2', 
-      title: 'Design system', 
-      description: 'Implement Tailwind 4 theme', 
-      status: 'in-progress', 
-      priority: 'medium', 
-      tags: ['ui', 'design'],
-      subtasks: [{ id: 's2', title: 'Color palette', completed: true }, { id: 's3', title: 'Glassmorphism', completed: false }],
-      assignedTo: ['Admin'],
-      createdAt: new Date().toISOString()
-    },
-    { 
-      id: '3', 
-      title: 'Auth Flow', 
-      description: 'Connect login and signup pages', 
-      status: 'todo', 
-      priority: 'high', 
-      tags: ['auth'],
-      subtasks: [],
-      assignedTo: [],
-      createdAt: new Date().toISOString()
-    }
-  ],
+const useTaskStore = create((set, get) => ({
+  tasks: [],
+  loading: false,
   filters: {
     status: 'all',
     priority: 'all',
     search: ''
   },
   
-  addTask: (task) => set((state) => ({ 
-    tasks: [...state.tasks, { ...task, id: Math.random().toString(36).substr(2, 9), createdAt: new Date().toISOString(), subtasks: [], assignedTo: [] }] 
-  })),
+  fetchTasks: async () => {
+    set({ loading: true });
+    try {
+      const response = await taskApi.getAll();
+      set({ tasks: response.data.data });
+    } catch (error) {
+      console.error('Failed to fetch tasks:', error);
+      toast.error('Could not load tasks from server');
+    } finally {
+      set({ loading: false });
+    }
+  },
   
-  updateTaskStatus: (taskId, status) => set((state) => ({
-    tasks: state.tasks.map(t => t.id === taskId ? { ...t, status } : t)
-  })),
+  addTask: async (taskData) => {
+    try {
+      const response = await taskApi.create(taskData);
+      set((state) => ({ tasks: [response.data.data, ...state.tasks] }));
+      toast.success('Task created successfully');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to create task');
+    }
+  },
+  
+  updateTaskStatus: async (taskId, status) => {
+    try {
+      const response = await taskApi.update(taskId, { status });
+      set((state) => ({
+        tasks: state.tasks.map(t => t.id === taskId || t._id === taskId ? response.data.data : t)
+      }));
+    } catch (error) {
+      toast.error('Failed to update status');
+    }
+  },
   
   setFilters: (filters) => set((state) => ({
     filters: { ...state.filters, ...filters }
   })),
   
-  deleteTask: (taskId) => set((state) => ({
-    tasks: state.tasks.filter(t => t.id !== taskId)
-  }))
+  deleteTask: async (taskId) => {
+    try {
+      await taskApi.delete(taskId);
+      set((state) => ({
+        tasks: state.tasks.filter(t => t.id !== taskId && t._id !== taskId)
+      }));
+      toast.success('Task deleted');
+    } catch (error) {
+      toast.error('Failed to delete task');
+    }
+  }
 }));
 
 export default useTaskStore;

@@ -23,7 +23,7 @@ const LoginPage = () => {
       login(data.user, data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Login failed. Use admin@demo.com / password');
+      setError(err.response?.data?.message || 'Login failed. Check credentials.');
     } finally {
       setLoading(false);
     }

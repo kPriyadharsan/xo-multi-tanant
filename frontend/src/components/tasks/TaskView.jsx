@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useTaskStore from '../../store/useTaskStore';
 import TaskBoard from './TaskBoard';
 import TaskModal from './TaskModal';
@@ -7,7 +7,11 @@ import { Search, Filter, Plus, SlidersHorizontal } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const TaskView = () => {
-  const { tasks, addTask, filters, setFilters } = useTaskStore();
+  const { tasks, addTask, filters, setFilters, fetchTasks } = useTaskStore();
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInitialStatus, setModalInitialStatus] = useState('todo');
 
