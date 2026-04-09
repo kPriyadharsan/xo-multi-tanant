@@ -1,4 +1,4 @@
-# 🌌 XO Multi-Tenant SaaS Task Management
+# 🌌 XO Multi-Tenant Task Management
 
 A premium, high-performance Multi-Tenant Task Management system built with the MERN stack (MongoDB, Express, React, Node.js). Featuring strict data isolation, real-time activity tracking, and a sleek modern UI.
 
