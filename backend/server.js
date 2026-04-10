@@ -30,6 +30,14 @@ app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
 
+// Basic Request Logging Middleware
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  }
+  next();
+});
+
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
