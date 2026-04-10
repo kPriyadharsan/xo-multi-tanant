@@ -52,4 +52,6 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+userSchema.index({ organization: 1 });
+
 module.exports = mongoose.model('User', userSchema);

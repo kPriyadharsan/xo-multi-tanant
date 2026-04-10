@@ -12,7 +12,8 @@ const getLogs = async (req, res, next) => {
       // Admin sees everything in org
       query = ActivityLog.find({ organization: req.user.organization })
         .populate('user', 'name email')
-        .sort('-createdAt');
+        .sort('-createdAt')
+        .lean();
     } else {
       // Member sees only their own activity
       query = ActivityLog.find({
@@ -20,7 +21,8 @@ const getLogs = async (req, res, next) => {
         user: req.user.id
       })
       .populate('user', 'name email')
-      .sort('-createdAt');
+      .sort('-createdAt')
+      .lean();
     }
 
     const logs = await query.limit(100);

@@ -11,7 +11,7 @@ const getTasks = async (req, res, next) => {
     // Organization filter (Strict Isolation)
     if (req.user.role === 'admin') {
       // Admin sees everything in org
-      query = Task.find({ organization: req.user.organization }).populate('assignedTo');
+      query = Task.find({ organization: req.user.organization }).populate('assignedTo').lean();
     } else {
       // Member sees only their tasks (assigned or created)
       query = Task.find({
@@ -20,7 +20,7 @@ const getTasks = async (req, res, next) => {
           { assignedTo: req.user.id },
           { createdBy: req.user.id }
         ]
-      }).populate('assignedTo');
+      }).populate('assignedTo').lean();
     }
 
     const tasks = await query;
