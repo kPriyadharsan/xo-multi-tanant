@@ -8,7 +8,10 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pt-28 pb-20">
+    <div className="min-h-screen pt-28 pb-20 relative overflow-hidden">
+      {/* Subtle Green Ambient Background */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-400/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-6 text-center">
         <motion.div
