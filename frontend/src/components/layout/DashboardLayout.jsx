@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import NotificationPanel from './NotificationPanel';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -56,9 +56,9 @@ const DashboardLayout = () => {
                   </span>
                 )}
               </button>
-              <button className="hover:text-indigo-600 transition-colors p-2">
+              <Link to="/dashboard/settings" className="hover:text-indigo-600 transition-colors p-2 flex items-center">
                 <Settings size={22} />
-              </button>
+              </Link>
             </div>
           </div>
         </header>

@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen, toggle }) => {
     <motion.aside
       initial={false}
       animate={{ width: isOpen ? 260 : 80 }}
-      className="fixed left-0 top-0 h-screen bg-white border-r border-slate-200 z-40 hidden md:flex flex-col"
+      className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200 z-40 flex flex-col transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} overflow-x-hidden`}
     >
       {/* Sidebar Header */}
       <div className="p-6 flex items-center justify-between">
