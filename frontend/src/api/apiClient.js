@@ -16,16 +16,27 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor to handle 401 Unauthorized
+// Response interceptor — handle auth and server errors globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      console.warn('Unauthorized request. Logging out...');
+    if (!error.response) {
+      // Network error — can't reach backend at all
+      console.error('Network error: Cannot reach the server.');
+      return Promise.reject(error);
+    }
+
+    const status = error.response.status;
+
+    if (status === 401) {
+      // Token invalid/expired — log out and redirect to login
+      console.warn('Unauthorized request. Clearing session...');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
     }
+
+    // 503 = DB temporarily unavailable — don't log out, let component handle it
     return Promise.reject(error);
   }
 );

@@ -17,8 +17,11 @@ const useTaskStore = create((set, get) => ({
       const response = await taskApi.getAll();
       set({ tasks: response.data.data });
     } catch (error) {
-      console.error('Failed to fetch tasks:', error);
-      toast.error('Could not load tasks from server');
+      const msg = error.response?.status === 503
+        ? 'Database unavailable. Please check your connection and try again.'
+        : 'Could not load tasks from server';
+      console.error('Failed to fetch tasks:', error.message);
+      toast.error(msg);
     } finally {
       set({ loading: false });
     }
@@ -30,7 +33,10 @@ const useTaskStore = create((set, get) => ({
       set((state) => ({ tasks: [response.data.data, ...state.tasks] }));
       toast.success('Task created successfully');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to create task');
+      const msg = error.response?.status === 503
+        ? 'Database unavailable. Please try again in a moment.'
+        : error.response?.data?.message || 'Failed to create task';
+      toast.error(msg);
     }
   },
   

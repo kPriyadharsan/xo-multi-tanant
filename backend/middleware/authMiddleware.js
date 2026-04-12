@@ -8,25 +8,32 @@ const protect = async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
+    token = req.headers.authorization.split(' ')[1];
+
+    // Step 1: Verify the JWT token (no DB call here)
+    let decoded;
     try {
-      // Get token from header
-      token = req.headers.authorization.split(' ')[1];
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (jwtError) {
+      console.error('JWT Verify Error:', jwtError.message);
+      return res.status(401).json({ message: 'Not authorized, token is invalid or expired' });
+    }
 
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Get user from the token and attach to req
-      req.user = await User.findById(decoded.id);
-
+    // Step 2: Fetch user from DB (separate try-catch so DB errors don't look like auth errors)
+    try {
+      req.user = await User.findById(decoded.id).lean();
+      if (!req.user) {
+        return res.status(401).json({ message: 'Not authorized, user not found' });
+      }
       return next();
-    } catch (error) {
-      console.error('JWT Verify Error:', error.message);
-      return res.status(401).json({ message: 'Not authorized' });
+    } catch (dbError) {
+      console.error('DB Error in auth middleware:', dbError.message);
+      return res.status(503).json({ message: 'Service temporarily unavailable. Please try again.' });
     }
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Not authorized, no token provided' });
   }
 };
 
