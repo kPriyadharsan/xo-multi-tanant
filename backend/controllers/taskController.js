@@ -35,6 +35,42 @@ const getTasks = async (req, res, next) => {
   }
 };
 
+// @desc    Get single task
+// @route   GET /api/tasks/:id
+// @access  Private
+const getTask = async (req, res, next) => {
+  try {
+    const task = await Task.findById(req.params.id).populate('assignedTo').lean();
+
+    if (!task) {
+      return res.status(404).json({ success: false, message: 'Task not found' });
+    }
+
+    // Strict Isolation check
+    if (task.organization.toString() !== req.user.organization.toString()) {
+      return res.status(401).json({ success: false, message: 'Not authorized to access this task' });
+    }
+
+    // RBAC: Check visibility if not admin
+    if (req.user.role !== 'admin') {
+      const isAssigned = task.assignedTo && task.assignedTo.toString() === req.user.id;
+      const isCreator = task.createdBy.toString() === req.user.id;
+      
+      if (!isAssigned && isCreator) {
+        // This logic depends on business rules. If member can only see their tasks:
+        // return res.status(401).json({ success: false, message: 'Not authorized to access this task' });
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      data: task
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // @desc    Create new task
 // @route   POST /api/tasks
 // @access  Private
@@ -71,16 +107,16 @@ const updateTask = async (req, res, next) => {
     let task = await Task.findById(req.params.id);
 
     if (!task) {
-      return res.status(404).json({ message: 'Task not found' });
+      return res.status(404).json({ success: false, message: 'Task not found' });
     }
 
     // RBAC: Check ownership or admin status
     if (task.organization.toString() !== req.user.organization.toString()) {
-      return res.status(401).json({ message: 'Not authorized for this organization' });
+      return res.status(401).json({ success: false, message: 'Not authorized for this organization' });
     }
 
-    if (req.user.role !== 'admin' && task.createdBy.toString() !== req.user.id.toString()) {
-       return res.status(401).json({ message: 'Not authorized to update this task' });
+    if (req.user.role !== 'admin' && task.createdBy.toString() !== req.user.id) {
+       return res.status(401).json({ success: false, message: 'Not authorized to update this task' });
     }
 
     task = await Task.findByIdAndUpdate(req.params.id, req.body, {
@@ -114,16 +150,16 @@ const deleteTask = async (req, res, next) => {
     const task = await Task.findById(req.params.id);
 
     if (!task) {
-      return res.status(404).json({ message: 'Task not found' });
+      return res.status(404).json({ success: false, message: 'Task not found' });
     }
 
     // RBAC check
     if (task.organization.toString() !== req.user.organization.toString()) {
-      return res.status(401).json({ message: 'Not authorized for this organization' });
+      return res.status(401).json({ success: false, message: 'Not authorized for this organization' });
     }
 
-    if (req.user.role !== 'admin' && task.createdBy.toString() !== req.user.id.toString()) {
-      return res.status(401).json({ message: 'Not authorized to delete this task' });
+    if (req.user.role !== 'admin' && task.createdBy.toString() !== req.user.id) {
+      return res.status(401).json({ success: false, message: 'Not authorized to delete this task' });
     }
 
     await task.deleteOne();
@@ -148,6 +184,7 @@ const deleteTask = async (req, res, next) => {
 
 module.exports = {
   getTasks,
+  getTask,
   createTask,
   updateTask,
   deleteTask
