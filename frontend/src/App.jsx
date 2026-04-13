@@ -8,6 +8,7 @@ import { Loader2 } from 'lucide-react';
 // Components
 import Navbar from './components/layout/Navbar';
 import DashboardLayout from './components/layout/DashboardLayout';
+import LogoutConfirmation from './components/layout/LogoutConfirmation';
 
 // Lazy Loaded Pages
 const LandingPage = lazy(() => import('./pages/landing/LandingPage'));
@@ -47,6 +48,7 @@ function App() {
           },
         }}
       />
+      <LogoutConfirmation />
       <Router>
         <Suspense fallback={<PageLoader />}>
           <Routes>

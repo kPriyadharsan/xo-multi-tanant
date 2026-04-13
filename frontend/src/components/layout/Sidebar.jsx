@@ -14,7 +14,7 @@ import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
 
 const Sidebar = ({ isOpen, toggle }) => {
-  const { logout, user } = useAuth();
+  const { confirmLogout, user } = useAuth();
 
   const navItems = [
     { icon: LayoutDashboard, label: 'Overview', path: '/dashboard' },
@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen, toggle }) => {
           )}
         </div>
         <button
-          onClick={logout}
+          onClick={confirmLogout}
           className={`flex items-center gap-4 w-full px-3 py-3 rounded-xl text-pink-600 hover:bg-pink-50 transition-colors ${!isOpen && 'justify-center'}`}
         >
           <LogOut size={22} />

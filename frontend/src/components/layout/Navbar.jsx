@@ -6,7 +6,7 @@ import { CheckCircle2, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, confirmLogout } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -30,7 +30,7 @@ const Navbar = () => {
             {user ? (
               <div className="flex items-center gap-4">
                 <Button variant="ghost" onClick={() => navigate('/dashboard')}>Dashboard</Button>
-                <Button variant="primary" onClick={logout}>Logout</Button>
+                <Button variant="primary" onClick={confirmLogout}>Logout</Button>
               </div>
             ) : (
               <div className="flex items-center gap-4">
@@ -60,7 +60,9 @@ const Navbar = () => {
             <Link to="/pricing" className="block text-lg font-medium text-slate-600" onClick={() => setIsOpen(false)}>Pricing</Link>
             <hr className="border-slate-100" />
             {user ? (
-              <Button className="w-full" onClick={logout}>Logout</Button>
+              <Button className="w-full bg-pink-600 hover:bg-pink-700" onClick={() => { confirmLogout(); setIsOpen(false); }}>
+                Logout
+              </Button>
             ) : (
               <div className="space-y-3">
                 <Button variant="ghost" className="w-full" onClick={() => { navigate('/login'); setIsOpen(false); }}>Login</Button>
