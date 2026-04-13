@@ -8,7 +8,7 @@ const generateTask = async (req, res, next) => {
     const { prompt } = req.body;
 
     if (!prompt) {
-      return res.status(400).json({ message: 'Please provide a prompt' });
+      return res.status(400).json({ success: false, message: 'Please provide a prompt' });
     }
 
     const aiResult = await generateTaskWithAI(prompt);
