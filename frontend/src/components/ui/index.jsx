@@ -26,14 +26,21 @@ export const Card = ({ children, className = '', glass = false }) => {
   );
 };
 
-export const Input = ({ label, error, className = '', ...props }) => {
+export const Input = ({ label, error, prefix, className = '', ...props }) => {
   return (
     <div className={`w-full ${className}`}>
       {label && <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">{label}</label>}
-      <input
-        className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 bg-white/50"
-        {...props}
-      />
+      <div className="relative group">
+        {prefix && (
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors pointer-events-none">
+            {prefix}
+          </div>
+        )}
+        <input
+          className={`w-full ${prefix ? 'pl-11' : 'px-4'} py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 bg-white/50`}
+          {...props}
+        />
+      </div>
       {error && <p className="mt-1 text-sm text-pink-600 ml-1">{error}</p>}
     </div>
   );
