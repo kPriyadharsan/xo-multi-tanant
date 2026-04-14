@@ -36,6 +36,8 @@ const userSchema = new mongoose.Schema({
     type: String, // Storing as Base64 string
     default: ''
   },
+  lastIp: String,
+  lastLogin: Date,
   createdAt: {
     type: Date,
     default: Date.now

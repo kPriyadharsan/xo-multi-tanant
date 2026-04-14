@@ -26,6 +26,12 @@ const io = socketio(server, {
   }
 });
 
+// Trust proxy for accurate IP detection when behind Nginx/Load Balancer
+app.set('trust proxy', 1);
+
+// Import custom middleware
+const { apiLimiter, authLimiter, aiLimiter } = require('./middleware/rateLimiter');
+
 // Middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
@@ -51,16 +57,10 @@ app.use(helmet());
 
 // Basic Request Logging (Removed in favor of Morgan)
 
-// Rate Limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: {
-    success: false,
-    message: 'Too many requests from this IP, please try again after 15 minutes'
-  }
-});
-app.use('/api/', limiter);
+// Apply Rate Limiting
+app.use('/api/auth', authLimiter);
+app.use('/api/ai', aiLimiter);
+app.use('/api/', apiLimiter);
 
 // Health Check Endpoint
 app.get('/health', (req, res) => {

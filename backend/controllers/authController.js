@@ -33,7 +33,9 @@ const register = async (req, res, next) => {
       email,
       password,
       organization: organization._id,
-      role: 'admin' // First user is admin
+      role: 'admin', // First user is admin
+      lastIp: req.ip,
+      lastLogin: new Date()
     });
 
     sendTokenResponse(user, 201, res);
@@ -67,6 +69,11 @@ const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
+
+    // Update last login and IP
+    user.lastLogin = new Date();
+    user.lastIp = req.ip;
+    await user.save({ validateBeforeSave: false });
 
     sendTokenResponse(user, 200, res);
   } catch (err) {
@@ -145,7 +152,9 @@ const sendTokenResponse = (user, statusCode, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        organization: user.organization
+        organization: user.organization,
+        lastIp: user.lastIp,
+        lastLogin: user.lastLogin
       }
     });
 };
