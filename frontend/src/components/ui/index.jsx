@@ -20,7 +20,7 @@ export const Button = ({ children, variant = 'primary', className = '', ...props
 
 export const Card = ({ children, className = '', glass = false }) => {
   return (
-    <div className={`${glass ? 'glass' : 'bg-white border border-slate-200'} rounded-2xl overflow-hidden ${className}`}>
+    <div className={`${glass ? 'glass' : 'themed-bg themed-border border'} rounded-2xl overflow-hidden ${className}`}>
       {children}
     </div>
   );
@@ -29,7 +29,7 @@ export const Card = ({ children, className = '', glass = false }) => {
 export const Input = ({ label, error, prefix, className = '', ...props }) => {
   return (
     <div className={`w-full ${className}`}>
-      {label && <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">{label}</label>}
+      {label && <label className="block text-sm font-medium themed-text mb-1.5 ml-1 opacity-80">{label}</label>}
       <div className="relative group">
         {prefix && (
           <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors pointer-events-none">
@@ -37,7 +37,7 @@ export const Input = ({ label, error, prefix, className = '', ...props }) => {
           </div>
         )}
         <input
-          className={`w-full ${prefix ? 'pl-11' : 'px-4'} py-3 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 bg-white/50`}
+          className={`w-full ${prefix ? 'pl-11' : 'px-4'} py-3 rounded-xl border themed-border focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all duration-200 themed-bg`}
           {...props}
         />
       </div>

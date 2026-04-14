@@ -22,16 +22,25 @@ const SettingsPage = lazy(() => import('./pages/Settings'));
 const TeamPage = lazy(() => import('./pages/Team'));
 
 const PageLoader = () => (
-  <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
+  <div className="min-h-screen flex flex-col items-center justify-center themed-bg gap-4">
     <div className="relative">
         <Loader2 className="animate-spin text-indigo-600" size={48} />
         <div className="absolute inset-0 bg-indigo-600/10 blur-xl rounded-full animate-pulse" />
     </div>
-    <p className="text-sm font-bold text-slate-400 animate-pulse tracking-widest uppercase">Initializing TaskFlow</p>
+    <p className="text-sm font-bold opacity-40 animate-pulse tracking-widest uppercase themed-text">Initializing TaskFlow</p>
   </div>
 );
 
 function App() {
+  React.useEffect(() => {
+    const theme = localStorage.getItem('theme') || 'light';
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <Toaster 

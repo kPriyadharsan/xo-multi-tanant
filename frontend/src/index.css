@@ -22,11 +22,46 @@
   --primary-glow: rgba(99, 102, 241, 0.15);
   --secondary: #ec4899;
   --bg-main: #fcfcfd;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: #ffffff;
+  --card-border: #f1f5f9;
+}
+
+.dark {
+  --bg-main: #020617;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --card-bg: #0f172a;
+  --card-border: #1e293b;
 }
 
 body {
-  @apply bg-[var(--bg-main)] text-slate-900 font-sans antialiased;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  @apply font-sans antialiased;
+  transition: background-color 0.3s ease;
   overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+}
+
+p {
+  color: var(--text-muted);
+}
+
+@utility themed-bg {
+  background-color: var(--card-bg);
+}
+
+@utility themed-border {
+  border-color: var(--card-border);
+}
+
+@utility themed-text {
+  color: var(--text-main);
 }
 
 @utility glass {
@@ -34,6 +69,11 @@ body {
   background-color: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.dark .glass {
+  background-color: rgba(15, 23, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 @utility glass-dark {
@@ -46,15 +86,11 @@ body {
 @utility text-gradient {
   background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, var(--color-indigo-600), var(--color-pink-600));
+  background-image: linear-gradient(to right, #6366f1, #ec4899);
 }
 
 @utility bg-gradient-mesh {
-  background-color: #fcfcfd;
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(160,30%,40%,0.8) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  background-color: var(--bg-main);
   background-attachment: fixed;
 }
 

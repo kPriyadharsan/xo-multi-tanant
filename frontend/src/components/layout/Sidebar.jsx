@@ -30,7 +30,7 @@ const Sidebar = ({ isOpen, toggle }) => {
     <motion.aside
       initial={false}
       animate={{ width: isOpen ? 260 : 80 }}
-      className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-200 z-40 flex flex-col transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} overflow-x-hidden`}
+      className={`fixed left-0 top-0 h-screen themed-bg border-r themed-border z-40 flex flex-col transition-all duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} overflow-x-hidden`}
     >
       {/* Sidebar Header */}
       <div className="p-6 flex items-center justify-between">
@@ -63,8 +63,8 @@ const Sidebar = ({ isOpen, toggle }) => {
       </nav>
 
       {/* User & Logout */}
-      <div className="p-4 border-t border-slate-100">
-        <div className={`flex items-center gap-3 p-2 rounded-xl bg-slate-50 mb-4 ${!isOpen && 'justify-center'}`}>
+      <div className="p-4 border-t themed-border">
+        <div className={`flex items-center gap-3 p-2 rounded-xl themed-bg border themed-border mb-4 ${!isOpen && 'justify-center'}`}>
           <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold overflow-hidden">
             {user?.profileImage ? (
               <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
