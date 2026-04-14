@@ -8,6 +8,8 @@ const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorMiddleware');
+const morgan = require('morgan');
+const compression = require('compression');
 
 // Load env vars
 dotenv.config();
@@ -27,6 +29,14 @@ const io = socketio(server, {
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+app.use(compression()); // Compress all responses
+
+// HTTP request logger
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined')); // Standard Apache combined log output
+}
 
 // Robust CORS configuration
 const corsOptions = {
@@ -38,13 +48,7 @@ app.use(cors(corsOptions));
 
 app.use(helmet());
 
-// Basic Request Logging Middleware
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.originalUrl}`);
-  }
-  next();
-});
+// Basic Request Logging (Removed in favor of Morgan)
 
 // Rate Limiting
 const limiter = rateLimit({
@@ -56,6 +60,15 @@ const limiter = rateLimit({
   }
 });
 app.use('/api/', limiter);
+
+// Health Check Endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'UP', 
+    timestamp: new Date(),
+    uptime: process.uptime()
+  });
+});
 
 // Route files
 const auth = require('./routes/authRoutes');
