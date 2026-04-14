@@ -48,6 +48,10 @@ const apiLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   keyGenerator,
   handler,
+  validate: { 
+    keyGeneratorIpFallback: false,
+    ip: false
+  },
   message: 'Too many requests from this user, please try again after 15 minutes'
 });
 
@@ -60,6 +64,10 @@ const authLimiter = rateLimit({
   // For auth routes, we primarily stick to IP since they aren't logged in yet
   keyGenerator: (req) => req.ip,
   handler,
+  validate: { 
+    keyGeneratorIpFallback: false,
+    ip: false
+  },
   message: 'Too many authentication attempts, please try again after an hour'
 });
 
@@ -71,6 +79,10 @@ const aiLimiter = rateLimit({
   legacyHeaders: false,
   keyGenerator,
   handler,
+  validate: { 
+    keyGeneratorIpFallback: false,
+    ip: false
+  },
   message: 'AI request limit reached for this hour'
 });
 

@@ -81,6 +81,7 @@ const ActivityPage = () => {
                 </div>
                 
                 {/* Optional Detail Preview */}
+                <div className="mt-4 pt-4 border-t border-slate-50">
                   <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-slate-400">
                       <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 rounded-md">
                         <FileText size={10} className="text-slate-300" />
