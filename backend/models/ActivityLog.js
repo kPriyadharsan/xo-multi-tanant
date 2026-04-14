@@ -25,6 +25,7 @@ const ActivityLogSchema = new mongoose.Schema({
     required: true
   },
   details: String,
+  ipAddress: String,
   createdAt: {
     type: Date,
     default: Date.now

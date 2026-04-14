@@ -174,7 +174,25 @@ const ProfilePage = () => {
                          <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm" />
                       </div>
                    </div>
-                   <Button variant="secondary" onClick={() => toast.error("Password change functionality coming soon!")}>Change Password</Button>
+
+                   <div className="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100/50">
+                      <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">Last Connection Details</p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                           <p className="text-[10px] font-bold text-slate-400 uppercase">IP Address</p>
+                           <p className="text-sm font-bold text-slate-700 mt-1">{user?.lastIp === '::1' || user?.lastIp === '127.0.0.1' ? 'Local Development' : user?.lastIp || 'Unknown IP'}</p>
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-bold text-slate-400 uppercase">Last Login</p>
+                           <p className="text-sm font-bold text-slate-700 mt-1">{user?.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Just now'}</p>
+                        </div>
+                      </div>
+                   </div>
+
+                   <div className="flex gap-4">
+                      <Button variant="secondary" onClick={() => toast.error("Password change functionality coming soon!")}>Change Password</Button>
+                      <Button variant="ghost" className="text-slate-400 text-xs">View all sessions</Button>
+                   </div>
                 </div>
             </Card>
           </div>

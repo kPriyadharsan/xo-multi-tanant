@@ -86,7 +86,8 @@ const createTask = async (req, res, next) => {
       organization: req.user.organization,
       targetType: 'Task',
       targetId: task._id,
-      details: `Created task: ${task.title}`
+      details: `Created task: ${task.title}`,
+      ipAddress: req.ip
     });
 
     res.status(201).json({
@@ -129,7 +130,8 @@ const updateTask = async (req, res, next) => {
         organization: req.user.organization,
         targetType: 'Task',
         targetId: task._id,
-        details: `Updated task: ${task.title}`
+        details: `Updated task: ${task.title}`,
+        ipAddress: req.ip
     });
 
     res.status(200).json({
@@ -169,7 +171,8 @@ const deleteTask = async (req, res, next) => {
         organization: req.user.organization,
         targetType: 'Task',
         targetId: task._id,
-        details: `Deleted task: ${task.title}`
+        details: `Deleted task: ${task.title}`,
+        ipAddress: req.ip
     });
 
     res.status(200).json({

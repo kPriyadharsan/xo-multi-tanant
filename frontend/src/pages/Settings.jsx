@@ -234,6 +234,31 @@ const SettingsPage = () => {
                            <Button variant="secondary" onClick={() => toast("Security settings are simulated for now.")}>Update Security</Button>
                         </div>
                       </div>
+
+                      {user?.role === 'admin' && (
+                        <div className="mt-10 pt-10 border-t themed-border text-left">
+                           <h4 className="text-sm font-bold themed-text mb-4 uppercase tracking-widest text-slate-400">Request Rate Monitoring</h4>
+                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <Card className="p-5 border-indigo-100 bg-indigo-50/20 shadow-none">
+                                 <p className="text-xs font-bold text-indigo-600">Global API Quota</p>
+                                 <p className="text-2xl font-black themed-text mt-2">200 <span className="text-sm font-medium text-slate-400">req / 15m</span></p>
+                                 <div className="w-full h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
+                                    <div className="w-1/4 h-full bg-indigo-600 rounded-full" />
+                                 </div>
+                              </Card>
+                              <Card className="p-5 border-pink-100 bg-pink-50/20 shadow-none">
+                                 <p className="text-xs font-bold text-pink-600">AI Tokens per User</p>
+                                 <p className="text-2xl font-black themed-text mt-2">50 <span className="text-sm font-medium text-slate-400">tasks / hr</span></p>
+                                 <div className="w-full h-1.5 bg-slate-100 rounded-full mt-4 overflow-hidden">
+                                    <div className="w-3/4 h-full bg-pink-500 rounded-full" />
+                                 </div>
+                              </Card>
+                           </div>
+                           <p className="text-[10px] text-slate-400 mt-4 leading-relaxed font-medium">
+                             * These limits are applied per individual IP and User ID combination to ensure fair usage across the organization.
+                           </p>
+                        </div>
+                      )}
                   </Card>
                 </motion.div>
               )}

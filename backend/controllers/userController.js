@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const logActivity = require('../utils/logger');
 
 // @desc    Get all users in organization
 // @route   GET /api/users
@@ -41,6 +42,16 @@ const updateUserRole = async (req, res, next) => {
     user.role = role;
     await user.save();
 
+    await logActivity({
+      action: 'UPDATED_USER_ROLE',
+      user: req.user.id,
+      organization: req.user.organization,
+      targetType: 'User',
+      targetId: user._id,
+      details: `Changed role of ${user.name} to ${role}`,
+      ipAddress: req.ip
+    });
+
     res.status(200).json({
       success: true,
       data: user
@@ -72,6 +83,16 @@ const removeUser = async (req, res, next) => {
     }
 
     await user.deleteOne();
+
+    await logActivity({
+      action: 'REMOVED_USER',
+      user: req.user.id,
+      organization: req.user.organization,
+      targetType: 'User',
+      targetId: user._id,
+      details: `Removed user ${user.name} from organization`,
+      ipAddress: req.ip
+    });
 
     res.status(200).json({
       success: true,

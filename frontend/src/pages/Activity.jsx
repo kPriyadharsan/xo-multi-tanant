@@ -81,10 +81,21 @@ const ActivityPage = () => {
                 </div>
                 
                 {/* Optional Detail Preview */}
-                <div className="mt-4 pt-4 border-t border-slate-50">
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400">
-                      <span className="w-1.5 h-1.5 rounded-full bg-slate-100" /> Action: {item.action}
-                      <span className="w-1.5 h-1.5 rounded-full bg-slate-100 ml-2" /> Target: {item.targetType}
+                  <div className="flex flex-wrap items-center gap-4 text-[10px] font-bold text-slate-400">
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 rounded-md">
+                        <FileText size={10} className="text-slate-300" />
+                        <span>Action: {item.action}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 rounded-md">
+                        <CheckCircle2 size={10} className="text-slate-300" />
+                        <span>Target: {item.targetType}</span>
+                      </div>
+                      {item.ipAddress && (
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 text-indigo-400 rounded-md">
+                          <CheckCircle2 size={10} className="text-indigo-300" />
+                          <span>IP: {item.ipAddress === '::1' || item.ipAddress === '127.0.0.1' ? 'Local System' : item.ipAddress}</span>
+                        </div>
+                      )}
                   </div>
                 </div>
               </Card>

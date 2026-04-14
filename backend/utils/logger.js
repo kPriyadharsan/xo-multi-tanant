@@ -1,6 +1,6 @@
 const ActivityLog = require('../models/ActivityLog');
 
-const logActivity = async ({ action, user, organization, targetType, targetId, details }) => {
+const logActivity = async ({ action, user, organization, targetType, targetId, details, ipAddress }) => {
   try {
     await ActivityLog.create({
       action,
@@ -8,7 +8,8 @@ const logActivity = async ({ action, user, organization, targetType, targetId, d
       organization,
       targetType,
       targetId,
-      details
+      details,
+      ipAddress
     });
   } catch (error) {
     console.error('Logging failed:', error);

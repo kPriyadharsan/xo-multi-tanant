@@ -36,6 +36,13 @@ api.interceptors.response.use(
       window.location.href = '/login';
     }
 
+    if (status === 429) {
+      // Rate limit hit
+      console.warn('Rate limit exceeded:', error.response.data?.message);
+      // We can use a custom error or just append info
+      error.message = error.response.data?.message || 'Wait a moment, too many requests.';
+    }
+
     // 503 = DB temporarily unavailable — don't log out, let component handle it
     return Promise.reject(error);
   }
