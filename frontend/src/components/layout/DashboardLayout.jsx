@@ -15,7 +15,7 @@ const DashboardLayout = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-[var(--bg-main)]">
       <Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
       
       <main 
@@ -24,24 +24,24 @@ const DashboardLayout = () => {
         }`}
       >
         {/* Top Header */}
-        <header className="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 px-8 flex items-center justify-between">
+        <header className="h-20 themed-bg-glass border-b themed-border sticky top-0 z-30 px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 md:hidden">
              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 text-slate-500">
                 <Menu size={24} />
              </button>
-             <span className="text-xl font-bold font-indigo-600">TaskFlow</span>
+             <span className="text-xl font-bold text-indigo-600">TaskFlow</span>
           </div>
 
-          <div className="hidden md:flex items-center gap-4 text-slate-500 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
+          <div className="hidden md:flex items-center gap-4 text-slate-500 themed-bg px-4 py-2 rounded-xl border themed-border">
              <Search size={18} />
-             <input type="text" placeholder="Quick search..." className="bg-transparent outline-none text-sm w-64" />
-             <span className="text-[10px] bg-white border border-slate-200 px-1.5 py-0.5 rounded shadow-sm font-bold text-slate-400">⌘K</span>
+             <input type="text" placeholder="Quick search..." className="bg-transparent outline-none text-sm w-64 themed-text" />
+             <span className="text-[10px] bg-indigo-600/10 border border-indigo-600/20 px-1.5 py-0.5 rounded shadow-sm font-bold text-indigo-600">⌘K</span>
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600/10 text-indigo-600 border border-indigo-600/20">
                 <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
-                <span className="text-xs font-bold leading-none">{user?.tenantId || 'Pro Plan'}</span>
+                <span className="text-xs font-bold leading-none uppercase tracking-wider">{user?.role || 'Member'}</span>
             </div>
             
             <div className="flex items-center gap-4 text-slate-400">

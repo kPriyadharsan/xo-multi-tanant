@@ -55,15 +55,15 @@ export const Modal = ({ isOpen, onClose, title, children, footer }) => {
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
-      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
-        <div className="px-6 py-6 border-b border-slate-50">
-          <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+      <div className="relative themed-bg rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 border themed-border">
+        <div className="px-6 py-6 border-b themed-border">
+          <h3 className="text-xl font-bold themed-text">{title}</h3>
         </div>
-        <div className="px-6 py-8">
+        <div className="px-6 py-8 themed-text">
           {children}
         </div>
         {footer && (
-          <div className="px-6 py-4 bg-slate-50/50 flex flex-col md:flex-row gap-3 justify-end italic text-xs text-slate-400">
+          <div className="px-6 py-4 themed-bg border-t themed-border flex flex-col md:flex-row gap-3 justify-end italic text-xs opacity-60">
              {footer}
           </div>
         )}

@@ -27,12 +27,12 @@ const NotificationPanel = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, x: 300 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 300 }}
-            className="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-[60] flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-sm themed-bg shadow-2xl z-[60] flex flex-col border-l themed-border"
           >
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+            <div className="p-6 border-b themed-border flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Bell size={20} className="text-slate-900" />
-                <h3 className="font-bold text-slate-900 text-lg">Notifications</h3>
+                <Bell size={20} className="themed-text" />
+                <h3 className="font-bold themed-text text-lg">Notifications</h3>
                 {notifications.filter(n => !n.read).length > 0 && (
                   <span className="bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                     {notifications.filter(n => !n.read).length} New
@@ -57,15 +57,15 @@ const NotificationPanel = ({ isOpen, onClose }) => {
                     layout
                     onClick={() => markAsRead(n.id)}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                      n.read ? 'bg-white border-slate-100' : 'bg-indigo-50/30 border-indigo-100 shadow-sm'
+                      n.read ? 'themed-bg themed-border' : 'bg-indigo-600/5 border-indigo-600/20 shadow-sm'
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <div className="mt-1">{typeIcons[n.type]}</div>
                       <div className="flex-1">
-                        <p className={`text-sm font-bold ${n.read ? 'text-slate-700' : 'text-slate-900'}`}>{n.title}</p>
-                        <p className="text-xs text-slate-500 mt-1 leading-relaxed">{n.message}</p>
-                        <p className="text-[10px] text-slate-400 mt-2 font-medium">{n.time}</p>
+                        <p className={`text-sm font-bold ${n.read ? 'themed-text opacity-80' : 'themed-text font-bold'}`}>{n.title}</p>
+                        <p className="text-xs opacity-60 mt-1 leading-relaxed">{n.message}</p>
+                        <p className="text-[10px] opacity-40 mt-2 font-medium">{n.time}</p>
                       </div>
                       {!n.read && <div className="w-2 h-2 rounded-full bg-indigo-600 mt-1.5" />}
                     </div>
@@ -80,8 +80,8 @@ const NotificationPanel = ({ isOpen, onClose }) => {
               )}
             </div>
             
-            <div className="p-6 border-t border-slate-100 bg-slate-50">
-               <button className="w-full py-2.5 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors">
+            <div className="p-6 border-t themed-border themed-bg opacity-90">
+               <button className="w-full py-2.5 text-xs font-bold opacity-60 hover:opacity-100 themed-text transition-colors">
                   View Notification History
                </button>
             </div>

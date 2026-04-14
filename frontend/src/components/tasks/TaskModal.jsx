@@ -89,26 +89,26 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-2xl bg-white rounded-[2rem] shadow-2xl overflow-hidden"
+        className="relative w-full max-w-2xl themed-bg border themed-border rounded-[2rem] shadow-2xl overflow-hidden"
       >
-        <div className="flex items-center justify-between p-6 border-b border-slate-100">
+        <div className="flex items-center justify-between p-6 border-b themed-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-indigo-600/10 text-indigo-600 rounded-xl flex items-center justify-center">
               <Layout size={20} />
             </div>
-            <h2 className="text-xl font-bold text-slate-900">Create New Task</h2>
+            <h2 className="text-xl font-bold themed-text">Create New Task</h2>
           </div>
           <div className="flex items-center gap-2">
             <button 
                 type="button"
                 onClick={handleAiGenerate}
                 disabled={isAiLoading}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl text-xs font-bold hover:bg-indigo-100 transition-all disabled:opacity-50"
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600/10 text-indigo-600 rounded-xl text-xs font-bold hover:bg-indigo-600/20 transition-all disabled:opacity-50"
             >
                 {isAiLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
                 Generate with AI
             </button>
-            <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                 <X size={20} className="text-slate-400" />
             </button>
           </div>

@@ -59,7 +59,7 @@ const TaskCharts = () => {
                   <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--card-border)" />
               <XAxis 
                 dataKey="name" 
                 axisLine={false} 
@@ -73,7 +73,7 @@ const TaskCharts = () => {
                 tick={{ fill: '#94a3b8', fontSize: 12 }}
               />
               <Tooltip 
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }} 
+                contentStyle={{ borderRadius: '12px', border: 'none', backgroundColor: 'var(--card-bg)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.3)', color: 'var(--text-main)' }} 
               />
               <Area 
                 type="monotone" 
@@ -106,7 +106,7 @@ const TaskCharts = () => {
                 ))}
               </Pie>
               <Tooltip 
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                contentStyle={{ borderRadius: '12px', border: 'none', backgroundColor: 'var(--card-bg)', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.3)', color: 'var(--text-main)' }}
               />
             </PieChart>
           </ResponsiveContainer>

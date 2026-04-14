@@ -32,15 +32,67 @@
   --bg-main: #020617;
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --card-bg: #0f172a;
-  --card-border: #1e293b;
+  --card-bg: #0b1121;
+  --card-border: rgba(30, 41, 59, 0.7);
+  --input-bg: #1e293b;
+  --primary-glow: rgba(99, 102, 241, 0.3);
+}
+
+/* Global Theme Overrides to fix visibility mismatches */
+.dark .bg-white { background-color: var(--card-bg) !important; }
+.dark .bg-slate-50 { background-color: var(--bg-main) !important; }
+.dark .themed-bg { background-color: var(--card-bg) !important; }
+
+/* Text Color Overrides */
+.dark .text-slate-900, 
+.dark .text-slate-800, 
+.dark .text-slate-700 { color: var(--text-main) !important; }
+.dark .text-slate-600, 
+.dark .text-slate-500,
+.dark .text-slate-400 { color: var(--text-muted) !important; }
+
+/* Border Overrides */
+.dark .border-slate-100, 
+.dark .border-slate-200,
+.dark .border-slate-50 { border-color: var(--card-border) !important; }
+
+/* Accent Surface Overrides (Light to Dark) */
+[class*="bg-indigo-50"], [class*="bg-indigo-100"] { 
+  .dark & { background-color: rgba(99, 102, 241, 0.1) !important; color: #818cf8 !important; }
+}
+[class*="bg-amber-50"] { 
+  .dark & { background-color: rgba(245, 158, 11, 0.1) !important; color: #fbbf24 !important; }
+}
+[class*="bg-emerald-50"], [class*="bg-emerald-100"] { 
+  .dark & { background-color: rgba(16, 185, 129, 0.1) !important; color: #34d399 !important; }
+}
+[class*="bg-pink-50"], [class*="bg-pink-100"] { 
+  .dark & { background-color: rgba(236, 72, 153, 0.1) !important; color: #f472b6 !important; }
+}
+
+/* Fractional and Hover Overrides */
+.dark [class*="bg-slate-50"], .dark [class*="hover:bg-slate-50"] { background-color: rgba(255, 255, 255, 0.03) !important; }
+.dark [class*="bg-white/50"], .dark [class*="bg-white/80"] { background-color: rgba(15, 23, 42, 0.5) !important; }
+.dark [class*="hover:bg-white"] { background-color: var(--card-bg) !important; }
+
+/* Special Items */
+.dark .shadow-sm, .dark .shadow-md, .dark .shadow-lg, .dark .shadow-2xl { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important; }
+.dark input::placeholder, .dark textarea::placeholder { color: var(--text-muted) !important; opacity: 0.5; }
+.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); }
+
+* {
+  @apply transition-colors duration-200;
+}
+
+::selection {
+  background-color: rgba(99, 102, 241, 0.3);
+  color: #fff;
 }
 
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
   @apply font-sans antialiased;
-  transition: background-color 0.3s ease;
   overflow-x: hidden;
 }
 
@@ -52,8 +104,14 @@ p {
   color: var(--text-muted);
 }
 
-@utility themed-bg {
-  background-color: var(--card-bg);
+@utility themed-bg-glass {
+  background-color: var(--bg-main);
+  opacity: 0.8;
+  backdrop-filter: blur(12px);
+}
+
+.dark @utility themed-bg-glass {
+  background-color: rgba(2, 6, 23, 0.8);
 }
 
 @utility themed-border {
@@ -62,6 +120,25 @@ p {
 
 @utility themed-text {
   color: var(--text-main);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 @utility glass {
