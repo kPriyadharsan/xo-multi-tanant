@@ -80,8 +80,12 @@ const TaskCard = ({ task, onUpdateStatus }) => {
           <div className="flex -space-x-2">
             {task.assignedTo?.length > 0 ? (
               task.assignedTo.map((user, i) => (
-                <div key={user._id || i} className="w-7 h-7 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600" title={user.name || 'User'}>
-                  {(user.name?.[0] || 'U').toUpperCase()}
+                <div key={user._id || i} className="w-7 h-7 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600 overflow-hidden" title={user.name || 'User'}>
+                  {user.profileImage ? (
+                    <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
+                  ) : (
+                    (user.name?.[0] || 'U').toUpperCase()
+                  )}
                 </div>
               ))
             ) : (

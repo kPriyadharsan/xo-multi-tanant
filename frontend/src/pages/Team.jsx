@@ -142,8 +142,12 @@ const TeamPage = () => {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold border-2 border-white shadow-sm">
-                          {member.name[0]}
+                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold border-2 border-white shadow-sm overflow-hidden">
+                          {member.profileImage ? (
+                            <img src={member.profileImage} alt={member.name} className="w-full h-full object-cover" />
+                          ) : (
+                            member.name[0]
+                          )}
                         </div>
                         <div>
                           <p className="font-bold text-slate-900 text-sm">{member.name}</p>
