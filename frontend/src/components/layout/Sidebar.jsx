@@ -8,7 +8,8 @@ import {
   BarChart3, 
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  User
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
@@ -20,7 +21,8 @@ const Sidebar = ({ isOpen, toggle }) => {
     { icon: LayoutDashboard, label: 'Overview', path: '/dashboard' },
     { icon: CheckSquare, label: 'My Tasks', path: '/dashboard/tasks' },
     { icon: BarChart3, label: 'Activity', path: '/dashboard/activity' },
-    { icon: Users, label: 'Profile', path: '/dashboard/profile' },
+    { icon: Users, label: 'Team', path: '/dashboard/team' },
+    { icon: User, label: 'Profile', path: '/dashboard/profile' },
     { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
   ];
 

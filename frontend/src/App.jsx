@@ -19,6 +19,7 @@ const TaskView = lazy(() => import('./components/tasks/TaskView'));
 const ProfilePage = lazy(() => import('./pages/Profile'));
 const ActivityPage = lazy(() => import('./pages/Activity'));
 const SettingsPage = lazy(() => import('./pages/Settings'));
+const TeamPage = lazy(() => import('./pages/Team'));
 
 const PageLoader = () => (
   <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
@@ -69,6 +70,7 @@ function App() {
               <Route index element={<DashboardOverview />} />
               <Route path="tasks" element={<TaskView />} />
               <Route path="activity" element={<ActivityPage />} />
+              <Route path="team" element={<TeamPage />} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />

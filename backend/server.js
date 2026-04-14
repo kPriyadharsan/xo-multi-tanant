@@ -62,12 +62,14 @@ const auth = require('./routes/authRoutes');
 const tasks = require('./routes/taskRoutes');
 const logs = require('./routes/activityRoutes');
 const ai = require('./routes/aiRoutes');
+const users = require('./routes/userRoutes');
 
 // Mount routers
 app.use('/api/auth', auth);
 app.use('/api/tasks', tasks);
 app.use('/api/logs', logs);
 app.use('/api/ai', ai);
+app.use('/api/users', users);
 
 // Real-time Socket.io logic
 io.on('connection', (socket) => {

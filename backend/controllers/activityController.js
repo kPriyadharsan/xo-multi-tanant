@@ -8,8 +8,8 @@ const getLogs = async (req, res, next) => {
     let query;
 
     // Organization filter (Strict Isolation)
-    if (req.user.role === 'admin') {
-      // Admin sees everything in org
+    if (req.user.role === 'admin' || req.user.role === 'manager') {
+      // Admin and Manager see everything in org
       query = ActivityLog.find({ organization: req.user.organization })
         .populate('user', 'name email')
         .sort('-createdAt')

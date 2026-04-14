@@ -11,11 +11,27 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
     description: '',
     status: initialStatus,
     priority: 'medium',
-    tags: []
+    tags: [],
+    assignedTo: []
   });
   
   const [tagInput, setTagInput] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [members, setMembers] = useState([]);
+
+  React.useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const { data } = await api.get('/users');
+        if (data.success) {
+          setMembers(data.data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch members');
+      }
+    };
+    if (isOpen) fetchMembers();
+  }, [isOpen]);
 
   const handleAiGenerate = async () => {
     if (!formData.title && !formData.description) {
@@ -161,6 +177,40 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
                   onChange={e => setTagInput(e.target.value)}
                   onKeyDown={handleAddTag}
                 />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1 flex items-center gap-2">
+                <UsersIcon size={14} /> Assign To
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {members.map(m => (
+                  <button
+                    key={m._id}
+                    type="button"
+                    onClick={() => {
+                      const isAssigned = formData.assignedTo.includes(m._id);
+                      if (isAssigned) {
+                        setFormData({ ...formData, assignedTo: formData.assignedTo.filter(id => id !== m._id) });
+                      } else {
+                        setFormData({ ...formData, assignedTo: [...formData.assignedTo, m._id] });
+                      }
+                    }}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all text-xs font-medium ${
+                      formData.assignedTo.includes(m._id)
+                        ? 'bg-indigo-600 border-indigo-600 text-white shadow-sm'
+                        : 'bg-white border-slate-100 text-slate-500 hover:border-slate-200'
+                    }`}
+                  >
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold ${
+                      formData.assignedTo.includes(m._id) ? 'bg-white/20' : 'bg-slate-100'
+                    }`}>
+                      {m.name[0]}
+                    </div>
+                    {m.name}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
