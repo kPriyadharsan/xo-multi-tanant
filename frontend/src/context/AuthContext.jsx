@@ -69,11 +69,18 @@ export const AuthProvider = ({ children }) => {
     setShowLogoutModal(false);
   };
 
+  const updateUser = (updatedData) => {
+    const newUser = { ...user, ...updatedData };
+    setUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
       login, 
       logout, 
+      updateUser,
       loading, 
       showLogoutModal, 
       confirmLogout, 

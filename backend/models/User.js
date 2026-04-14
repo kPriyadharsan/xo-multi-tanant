@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   refreshToken: String,
+  profileImage: {
+    type: String, // Storing as Base64 string
+    default: ''
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -65,8 +65,12 @@ const Sidebar = ({ isOpen, toggle }) => {
       {/* User & Logout */}
       <div className="p-4 border-t border-slate-100">
         <div className={`flex items-center gap-3 p-2 rounded-xl bg-slate-50 mb-4 ${!isOpen && 'justify-center'}`}>
-          <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">
-            {user?.name?.[0] || 'U'}
+          <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold overflow-hidden">
+            {user?.profileImage ? (
+              <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              user?.name?.[0] || 'U'
+            )}
           </div>
           {isOpen && (
             <div className="overflow-hidden">

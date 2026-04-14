@@ -91,6 +91,31 @@ const getMe = async (req, res, next) => {
   }
 };
 
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name, profileImage } = req.body;
+    const updates = {};
+    
+    if (name) updates.name = name;
+    if (profileImage) updates.profileImage = profileImage;
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+      runValidators: true
+    }).populate('organization');
+
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Get token from model, create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   // Create token
@@ -128,5 +153,6 @@ const sendTokenResponse = (user, statusCode, res) => {
 module.exports = {
   register,
   login,
-  getMe
+  getMe,
+  updateProfile
 };

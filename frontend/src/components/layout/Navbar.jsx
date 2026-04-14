@@ -29,6 +29,16 @@ const Navbar = () => {
             <Link to="/pricing" className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">Pricing</Link>
             {user ? (
               <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 pr-4 border-r border-slate-100">
+                    <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold overflow-hidden cursor-pointer" onClick={() => navigate('/dashboard/profile')}>
+                        {user.profileImage ? (
+                            <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                            user.name[0]
+                        )}
+                    </div>
+                    <span className="text-sm font-bold text-slate-700">{user.name.split(' ')[0]}</span>
+                </div>
                 <Button variant="ghost" onClick={() => navigate('/dashboard')}>Dashboard</Button>
                 <Button variant="primary" onClick={confirmLogout}>Logout</Button>
               </div>
