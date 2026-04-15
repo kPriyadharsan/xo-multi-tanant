@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const TaskCard = ({ task, onUpdateStatus }) => {
+const TaskCard = ({ task, onEdit, onUpdateStatus }) => {
   const priorityColors = {
     high: 'text-pink-600 bg-pink-50',
     medium: 'text-amber-600 bg-amber-50',
@@ -31,7 +31,7 @@ const TaskCard = ({ task, onUpdateStatus }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -4 }}
-      className="mb-4"
+      className="group mb-4"
     >
       <Card className={`p-5 hover:shadow-lg transition-shadow border-l-4 ${statusColors[task.status]} ${
         task.priority === 'high' ? 'border-l-pink-500' : 
@@ -45,12 +45,18 @@ const TaskCard = ({ task, onUpdateStatus }) => {
               </span>
             ))}
           </div>
-          <button className="text-slate-400 hover:text-slate-600">
-            <MoreHorizontal size={18} />
-          </button>
+          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button 
+                onClick={() => onEdit(task)}
+                className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                title="Edit Task"
+            >
+              <MoreHorizontal size={16} />
+            </button>
+          </div>
         </div>
 
-        <h4 className="font-bold text-slate-900 mb-1 leading-tight">{task.title}</h4>
+        <h4 className="font-bold text-slate-900 mb-1 leading-tight group-hover:text-indigo-600 transition-colors cursor-pointer" onClick={() => onEdit(task)}>{task.title}</h4>
         <p className="text-sm text-slate-500 line-clamp-2 mb-4">{task.description}</p>
 
         {/* Task Progress (Subtasks) */}
@@ -70,14 +76,26 @@ const TaskCard = ({ task, onUpdateStatus }) => {
         )}
 
         <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-          <div className="flex items-center gap-3 text-slate-400">
-            <div className="flex items-center gap-1 text-xs font-medium">
-              <Calendar size={14} /> 
-              <span>{new Date(task.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-            </div>
+          <div className="flex items-center gap-2">
+             <select 
+                value={task.status}
+                onChange={(e) => onUpdateStatus(task._id || task.id, e.target.value)}
+                className="text-[10px] font-bold uppercase bg-slate-50 border-none rounded-lg px-2 py-1 text-slate-500 outline-none focus:ring-2 focus:ring-indigo-500/20 cursor-pointer hover:bg-slate-100 transition-colors"
+             >
+                <option value="todo">To Do</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+             </select>
           </div>
 
-          <div className="flex -space-x-2">
+          <div className="flex items-center gap-4">
+            {task.dueDate && (
+              <div className="flex items-center gap-1 text-[10px] font-bold text-pink-600 bg-pink-50 px-2 py-1 rounded-lg">
+                <Calendar size={12} />
+                <span>{new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+              </div>
+            )}
+            <div className="flex -space-x-2">
             {task.assignedTo?.length > 0 ? (
               task.assignedTo.map((user, i) => (
                 <div key={user._id || i} className="w-7 h-7 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600 overflow-hidden" title={user.name || 'User'}>

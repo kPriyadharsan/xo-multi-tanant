@@ -7,22 +7,39 @@ import { Search, Filter, Plus, SlidersHorizontal } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const TaskView = () => {
-  const { tasks, addTask, filters, setFilters, fetchTasks } = useTaskStore();
+  const { tasks, addTask, updateTask, updateTaskStatus, filters, setFilters, fetchTasks } = useTaskStore();
 
   useEffect(() => {
     fetchTasks();
   }, []);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
   const [modalInitialStatus, setModalInitialStatus] = useState('todo');
 
   const openAddModal = (status = 'todo') => {
+    setEditingTask(null);
     setModalInitialStatus(status);
     setIsModalOpen(true);
   };
 
+  const openEditModal = (task) => {
+    setEditingTask(task);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveTask = async (taskData) => {
+    if (editingTask) {
+      await updateTask(editingTask._id || editingTask.id, taskData);
+    } else {
+      await addTask(taskData);
+    }
+    setIsModalOpen(false);
+  };
+
   const filteredTasks = tasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(filters.search.toLowerCase()) || 
-                         task.description.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesSearch = (task.title?.toLowerCase() || '').includes(filters.search.toLowerCase()) || 
+                         (task.description?.toLowerCase() || '').includes(filters.search.toLowerCase());
     const matchesPriority = filters.priority === 'all' || task.priority === filters.priority;
     return matchesSearch && matchesPriority;
   });
@@ -66,13 +83,19 @@ const TaskView = () => {
       </div>
 
       {/* Kanban Board */}
-      <TaskBoard tasks={filteredTasks} onAddTask={openAddModal} />
+      <TaskBoard 
+        tasks={filteredTasks} 
+        onAddTask={openAddModal} 
+        onEditTask={openEditModal}
+        onUpdateStatus={updateTaskStatus}
+      />
 
       <TaskModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        onSave={addTask}
+        onSave={handleSaveTask}
         initialStatus={modalInitialStatus}
+        initialTask={editingTask}
       />
     </div>
   );

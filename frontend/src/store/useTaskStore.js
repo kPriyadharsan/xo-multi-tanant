@@ -50,6 +50,18 @@ const useTaskStore = create((set, get) => ({
       toast.error('Failed to update status');
     }
   },
+
+  updateTask: async (taskId, taskData) => {
+    try {
+      const response = await taskApi.update(taskId, taskData);
+      set((state) => ({
+        tasks: state.tasks.map(t => t.id === taskId || t._id === taskId ? response.data.data : t)
+      }));
+      toast.success('Task updated successfully');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to update task');
+    }
+  },
   
   setFilters: (filters) => set((state) => ({
     filters: { ...state.filters, ...filters }

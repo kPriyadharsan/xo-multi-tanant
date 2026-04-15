@@ -3,7 +3,7 @@ import TaskCard from './TaskCard';
 import { Plus, MoreHorizontal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TaskBoard = ({ tasks, onAddTask }) => {
+const TaskBoard = ({ tasks, onAddTask, onEditTask, onUpdateStatus }) => {
   const columns = [
     { id: 'todo', title: 'To Do', color: 'bg-slate-500' },
     { id: 'in-progress', title: 'In Progress', color: 'bg-indigo-500' },
@@ -34,7 +34,12 @@ const TaskBoard = ({ tasks, onAddTask }) => {
               {tasks
                 .filter(t => t.status === column.id)
                 .map(task => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard 
+                    key={task._id || task.id} 
+                    task={task} 
+                    onEdit={onEditTask} 
+                    onUpdateStatus={onUpdateStatus} 
+                  />
                 ))}
             </AnimatePresence>
 

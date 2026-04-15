@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Layout, AlignLeft, Flag, Tag, Users as UsersIcon, Sparkles, Loader2 } from 'lucide-react';
 import { Button, Input, Card } from '../ui';
+import api from '../../api/apiClient';
 import { generateTaskAI } from '../../api/aiService';
 import toast from 'react-hot-toast';
 
-const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
+const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo', initialTask = null }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -18,6 +19,32 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
   const [tagInput, setTagInput] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [members, setMembers] = useState([]);
+
+  React.useEffect(() => {
+    if (initialTask) {
+      setFormData({
+        title: initialTask.title || '',
+        description: initialTask.description || '',
+        status: initialTask.status || initialStatus,
+        priority: initialTask.priority || 'medium',
+        tags: initialTask.tags || [],
+        subtasks: initialTask.subtasks || [],
+        dueDate: initialTask.dueDate || null,
+        assignedTo: initialTask.assignedTo?.map(u => typeof u === 'object' ? u._id : u) || []
+      });
+    } else {
+      setFormData({
+        title: '',
+        description: '',
+        status: initialStatus,
+        priority: 'medium',
+        tags: [],
+        subtasks: [],
+        dueDate: null,
+        assignedTo: []
+      });
+    }
+  }, [initialTask, initialStatus, isOpen]);
 
   React.useEffect(() => {
     const fetchMembers = async () => {
@@ -96,7 +123,9 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
             <div className="w-10 h-10 bg-indigo-600/10 text-indigo-600 rounded-xl flex items-center justify-center">
               <Layout size={20} />
             </div>
-            <h2 className="text-xl font-bold themed-text">Create New Task</h2>
+            <h2 className="text-xl font-bold themed-text">
+              {initialTask ? 'Edit Task' : 'Create New Task'}
+            </h2>
           </div>
           <div className="flex items-center gap-2">
             <button 
@@ -180,6 +209,102 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Status</label>
+                  <select
+                    className="w-full px-4 py-2 rounded-xl border border-slate-200 outline-none bg-slate-50 focus:bg-white text-sm"
+                    value={formData.status}
+                    onChange={e => setFormData({ ...formData, status: e.target.value })}
+                  >
+                    <option value="todo">To Do</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1 flex items-center gap-2">
+                    <Calendar size={14} /> Due Date
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full px-4 py-2 rounded-xl border border-slate-200 outline-none bg-slate-50 focus:bg-white text-sm"
+                    value={formData.dueDate ? new Date(formData.dueDate).toISOString().split('T')[0] : ''}
+                    onChange={e => setFormData({ ...formData, dueDate: e.target.value })}
+                  />
+                </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1 flex items-center gap-2">
+                <Layout size={14} /> Subtasks
+              </label>
+              <div className="space-y-2 mb-3">
+                {formData.subtasks?.map((sub, idx) => (
+                  <div key={idx} className="flex items-center gap-2 bg-slate-50 p-2 rounded-lg group">
+                    <button 
+                        type="button"
+                        onClick={() => {
+                            const newSubtasks = [...formData.subtasks];
+                            newSubtasks[idx].completed = !newSubtasks[idx].completed;
+                            setFormData({ ...formData, subtasks: newSubtasks });
+                        }}
+                        className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${sub.completed ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-slate-300 hover:border-indigo-400'}`}
+                    >
+                        {sub.completed && <X size={10} className="rotate-45" />}
+                    </button>
+                    <span className={`text-sm flex-1 ${sub.completed ? 'line-through text-slate-400' : 'text-slate-600'}`}>{sub.title}</span>
+                    <button 
+                        type="button" 
+                        onClick={() => setFormData({ ...formData, subtasks: formData.subtasks.filter((_, i) => i !== idx) })}
+                        className="text-slate-400 hover:text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <X size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Add a subtask..."
+                  className="flex-1 px-4 py-2 text-sm rounded-xl border border-slate-200 outline-none bg-slate-50 focus:bg-white"
+                  id="subtask-input"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = e.target.value.trim();
+                      if (val) {
+                        setFormData({ 
+                            ...formData, 
+                            subtasks: [...(formData.subtasks || []), { title: val, completed: false }] 
+                        });
+                        e.target.value = '';
+                      }
+                    }
+                  }}
+                />
+                <Button 
+                    type="button" 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                        const input = document.getElementById('subtask-input');
+                        const val = input.value.trim();
+                        if (val) {
+                            setFormData({ 
+                                ...formData, 
+                                subtasks: [...(formData.subtasks || []), { title: val, completed: false }] 
+                            });
+                            input.value = '';
+                        }
+                    }}
+                >
+                    Add
+                </Button>
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5 ml-1 flex items-center gap-2">
                 <UsersIcon size={14} /> Assign To
@@ -217,7 +342,9 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo' }) => {
 
           <div className="mt-10 flex gap-3 justify-end">
             <Button type="button" variant="ghost" onClick={onClose}>Cancel</Button>
-            <Button type="submit" className="px-10">Create Task</Button>
+            <Button type="submit" className="px-10">
+                {initialTask ? 'Save Changes' : 'Create Task'}
+            </Button>
           </div>
         </form>
       </motion.div>
