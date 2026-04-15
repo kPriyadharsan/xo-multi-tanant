@@ -66,5 +66,3 @@ const TaskBoard = ({ tasks, onAddTask, onEditTask, onUpdateStatus }) => {
 };
 
 export default TaskBoard;
-
-export default TaskBoard;
