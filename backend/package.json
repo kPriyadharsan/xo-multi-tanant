@@ -9,6 +9,16 @@
     "fresh": "npm run kill-port && nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "../frontend/*",
+      "node_modules/*"
+    ],
+    "watch": [
+      "./"
+    ],
+    "ext": "js,json"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

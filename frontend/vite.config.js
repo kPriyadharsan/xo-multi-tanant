@@ -9,9 +9,21 @@ export default defineConfig({
   resolve: {
     alias: {
       'socket.io-client': path.resolve(__dirname, 'node_modules/socket.io-client/build/esm/index.js'),
+      'react-is': path.resolve(__dirname, 'node_modules/react-is/index.js'),
     },
+  },
+  optimizeDeps: {
+    include: [
+      'recharts',
+      'socket.io-client',
+      'react-is',
+      'prop-types',
+      'framer-motion',
+      'lucide-react'
+    ]
   },
   server: {
     port: 5173,
+    host: true
   }
 })

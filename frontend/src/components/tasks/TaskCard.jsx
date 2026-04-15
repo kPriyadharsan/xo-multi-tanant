@@ -113,7 +113,8 @@ const TaskCard = React.memo(({ task, onEdit, onUpdateStatus }) => {
             )}
           </div>
         </div>
-      </Card>
+      </div>
+    </Card>
     </motion.div>
   );
 });
