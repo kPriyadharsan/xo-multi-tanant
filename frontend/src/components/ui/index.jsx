@@ -1,5 +1,6 @@
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const Button = ({ children, variant = 'primary', className = '', loading = false, disabled, ...props }) => {
   const variants = {
@@ -50,27 +51,48 @@ export const Input = ({ label, error, prefix, className = '', ...props }) => {
 };
 
 export const Modal = ({ isOpen, onClose, title, children, footer }) => {
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div 
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-      <div className="relative themed-bg rounded-3xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200 border themed-border">
-        <div className="px-6 py-6 border-b themed-border">
-          <h3 className="text-xl font-bold themed-text">{title}</h3>
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-x-hidden overflow-y-auto">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity"
+            onClick={onClose}
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="relative glass rounded-[2.5rem] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] w-full max-w-xl overflow-hidden border-white/20"
+          >
+            {/* Modal Header */}
+            <div className="px-8 pt-8 pb-6 flex items-center justify-between">
+              <h3 className="text-2xl font-black themed-text tracking-tight">{title}</h3>
+              <button 
+                onClick={onClose}
+                className="w-10 h-10 rounded-xl bg-slate-100/50 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all"
+              >
+                 <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="px-8 py-4 themed-text max-h-[70vh] overflow-y-auto no-scrollbar">
+              {children}
+            </div>
+
+            {/* Modal Footer */}
+            {footer && (
+              <div className="px-8 py-8 themed-bg/50 border-t themed-border flex flex-col sm:flex-row gap-4 justify-end">
+                 {footer}
+              </div>
+            )}
+          </motion.div>
         </div>
-        <div className="px-6 py-8 themed-text">
-          {children}
-        </div>
-        {footer && (
-          <div className="px-6 py-4 themed-bg border-t themed-border flex flex-col md:flex-row gap-3 justify-end italic text-xs opacity-60">
-             {footer}
-          </div>
-        )}
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 };
