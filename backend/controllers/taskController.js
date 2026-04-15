@@ -90,6 +90,9 @@ const createTask = async (req, res, next) => {
       ipAddress: req.ip
     });
 
+    const io = req.app.get('io');
+    io.to(req.user.organization.toString()).emit('taskCreated', task);
+
     res.status(201).json({
       success: true,
       data: task
@@ -134,6 +137,9 @@ const updateTask = async (req, res, next) => {
         ipAddress: req.ip
     });
 
+    const io = req.app.get('io');
+    io.to(req.user.organization.toString()).emit('taskUpdated', task);
+
     res.status(200).json({
       success: true,
       data: task
@@ -174,6 +180,9 @@ const deleteTask = async (req, res, next) => {
         details: `Deleted task: ${task.title}`,
         ipAddress: req.ip
     });
+
+    const io = req.app.get('io');
+    io.to(req.user.organization.toString()).emit('taskDeleted', task._id);
 
     res.status(200).json({
       success: true,

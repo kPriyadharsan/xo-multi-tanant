@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react';
 import Navbar from './components/layout/Navbar';
 import DashboardLayout from './components/layout/DashboardLayout';
 import LogoutConfirmation from './components/layout/LogoutConfirmation';
+import ErrorBoundary from './components/layout/ErrorBoundary';
 
 // Lazy Loaded Pages
 const LandingPage = lazy(() => import('./pages/landing/LandingPage'));
@@ -59,37 +60,39 @@ function App() {
         }}
       />
       <LogoutConfirmation />
-      <Router>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<><Navbar /><LandingPage /></>} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            
-            {/* Protected Dashboard Routes */}
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <DashboardLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<DashboardOverview />} />
-              <Route path="tasks" element={<TaskView />} />
-              <Route path="activity" element={<ActivityPage />} />
-              <Route path="team" element={<TeamPage />} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="settings" element={<SettingsPage />} />
-              <Route path="*" element={<Navigate to="/dashboard" replace />} />
-            </Route>
-
-            {/* Catch All */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </Router>
+      <ErrorBoundary>
+        <Router>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<><Navbar /><LandingPage /></>} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              
+              {/* Protected Dashboard Routes */}
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <DashboardLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<DashboardOverview />} />
+                <Route path="tasks" element={<TaskView />} />
+                <Route path="activity" element={<ActivityPage />} />
+                <Route path="team" element={<TeamPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              </Route>
+  
+              {/* Catch All */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </Router>
+      </ErrorBoundary>
     </AuthProvider>
   );
 }

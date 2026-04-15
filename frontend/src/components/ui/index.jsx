@@ -1,6 +1,7 @@
 import React from 'react';
+import { Loader2 } from 'lucide-react';
 
-export const Button = ({ children, variant = 'primary', className = '', ...props }) => {
+export const Button = ({ children, variant = 'primary', className = '', loading = false, disabled, ...props }) => {
   const variants = {
     primary: 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md hover:shadow-lg',
     secondary: 'bg-white text-indigo-600 border border-indigo-100 hover:bg-indigo-50',
@@ -10,9 +11,11 @@ export const Button = ({ children, variant = 'primary', className = '', ...props
 
   return (
     <button
-      className={`px-6 py-2.5 rounded-xl font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none ${variants[variant]} ${className}`}
+      className={`px-6 py-2.5 rounded-xl font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center gap-2 ${variants[variant]} ${className}`}
+      disabled={disabled || loading}
       {...props}
     >
+      {loading && <Loader2 size={18} className="animate-spin" />}
       {children}
     </button>
   );

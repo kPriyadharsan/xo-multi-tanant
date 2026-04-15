@@ -75,9 +75,9 @@ const LoginPage = () => {
             <Button
               type="submit"
               className="w-full py-4 flex items-center justify-center gap-2"
-              disabled={loading}
+              loading={loading}
             >
-              {loading ? <Loader2 className="animate-spin" size={20} /> : 'Sign In'}
+              Sign In
             </Button>
           </form>
 

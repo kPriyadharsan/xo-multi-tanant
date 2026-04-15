@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { taskApi } from '../api/apiClient';
+import socket from '../api/socket';
 import toast from 'react-hot-toast';
 
 const useTaskStore = create((set, get) => ({
@@ -26,11 +27,42 @@ const useTaskStore = create((set, get) => ({
       set({ loading: false });
     }
   },
+
+  setupSocket: () => {
+    socket.off('taskCreated');
+    socket.off('taskUpdated');
+    socket.off('taskDeleted');
+
+    socket.on('taskCreated', (task) => {
+      set((state) => ({ tasks: [task, ...state.tasks] }));
+    });
+
+    socket.on('taskUpdated', (updatedTask) => {
+      set((state) => ({
+        tasks: state.tasks.map(t => (t._id === updatedTask._id || t.id === updatedTask._id) ? updatedTask : t)
+      }));
+    });
+
+    socket.on('taskDeleted', (taskId) => {
+      set((state) => ({
+        tasks: state.tasks.filter(t => t._id !== taskId && t.id !== taskId)
+      }));
+    });
+  },
   
   addTask: async (taskData) => {
     try {
       const response = await taskApi.create(taskData);
-      set((state) => ({ tasks: [response.data.data, ...state.tasks] }));
+      // We don't update state here manually if socket is active, 
+      // but keeping it for immediate feedback or if socket fails.
+      // Actually, for immediate feedback it's better to update, 
+      // the socket listener should handle duplicates if needed.
+      // But let's assume socket might be faster or safer.
+      // To avoid double items, let's just use the server response and let socket update others.
+      set((state) => {
+          if (state.tasks.some(t => t._id === response.data.data._id)) return state;
+          return { tasks: [response.data.data, ...state.tasks] };
+      });
       toast.success('Task created successfully');
     } catch (error) {
       const msg = error.response?.status === 503
@@ -41,17 +73,26 @@ const useTaskStore = create((set, get) => ({
   },
   
   updateTaskStatus: async (taskId, status) => {
+    const previousTasks = get().tasks;
+    // Optimistic update
+    set((state) => ({
+      tasks: state.tasks.map(t => (t.id === taskId || t._id === taskId) ? { ...t, status } : t)
+    }));
+
     try {
       const response = await taskApi.update(taskId, { status });
       set((state) => ({
-        tasks: state.tasks.map(t => t.id === taskId || t._id === taskId ? response.data.data : t)
+        tasks: state.tasks.map(t => (t.id === taskId || t._id === taskId) ? response.data.data : t)
       }));
     } catch (error) {
+      set({ tasks: previousTasks });
       toast.error('Failed to update status');
     }
   },
 
   updateTask: async (taskId, taskData) => {
+    const previousTasks = get().tasks;
+    // We don't do full optimistic update here as taskData might be complex
     try {
       const response = await taskApi.update(taskId, taskData);
       set((state) => ({
@@ -68,13 +109,17 @@ const useTaskStore = create((set, get) => ({
   })),
   
   deleteTask: async (taskId) => {
+    const previousTasks = get().tasks;
+    // Optimistic update
+    set((state) => ({
+      tasks: state.tasks.filter(t => t.id !== taskId && t._id !== taskId)
+    }));
+
     try {
       await taskApi.delete(taskId);
-      set((state) => ({
-        tasks: state.tasks.filter(t => t.id !== taskId && t._id !== taskId)
-      }));
       toast.success('Task deleted');
     } catch (error) {
+      set({ tasks: previousTasks });
       toast.error('Failed to delete task');
     }
   }

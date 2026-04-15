@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import NotificationPanel from './NotificationPanel';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,6 +11,7 @@ const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const { user } = useAuth();
+  const location = useLocation();
   const { notifications } = useNotificationStore();
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -66,8 +67,18 @@ const DashboardLayout = () => {
         <NotificationPanel isOpen={isNotifOpen} onClose={() => setIsNotifOpen(false)} />
 
         {/* Content Area */}
-        <section className="p-8 max-w-[1600px] mx-auto">
-          <Outlet />
+        <section className="p-8 max-w-[1600px] mx-auto min-h-[calc(100vh-80px)]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </section>
       </main>
     </div>

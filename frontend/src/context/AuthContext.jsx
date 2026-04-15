@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/apiClient';
+import socket from '../api/socket';
 
 const AuthContext = createContext(null);
 
@@ -46,6 +47,26 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
+  // Socket management
+  useEffect(() => {
+    if (user && user.organization) {
+      const orgId = typeof user.organization === 'object' ? user.organization._id : user.organization;
+      socket.connect();
+      socket.emit('joinOrganization', orgId);
+      
+      // Import dynamic to avoid circular dependencies if any
+      const setup = async () => {
+         const { default: useTaskStore } = await import('../store/useTaskStore');
+         useTaskStore.getState().setupSocket();
+      };
+      setup();
+
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [user]);
+
   const login = (userData, token) => {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
@@ -57,6 +78,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     setUser(null);
     setShowLogoutModal(false);
+    socket.disconnect();
     // Force a clean redirect to login or landing
     window.location.href = '/';
   };

@@ -54,5 +54,8 @@ const TaskSchema = new mongoose.Schema({
 
 TaskSchema.index({ organization: 1, createdBy: 1 });
 TaskSchema.index({ organization: 1, assignedTo: 1 });
+TaskSchema.index({ organization: 1, status: 1 });
+TaskSchema.index({ organization: 1, priority: 1 });
+TaskSchema.index({ organization: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Task', TaskSchema);

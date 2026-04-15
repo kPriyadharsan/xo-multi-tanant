@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const TaskCard = ({ task, onEdit, onUpdateStatus }) => {
+const TaskCard = React.memo(({ task, onEdit, onUpdateStatus }) => {
   const priorityColors = {
     high: 'text-pink-600 bg-pink-50',
     medium: 'text-amber-600 bg-amber-50',
@@ -116,6 +116,6 @@ const TaskCard = ({ task, onEdit, onUpdateStatus }) => {
       </Card>
     </motion.div>
   );
-};
+});
 
 export default TaskCard;
