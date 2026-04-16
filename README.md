@@ -99,4 +99,4 @@ The platform is designed to be extensible. To add a new feature, ensure you foll
 
 ---
 
-*Built with ❤️ by the TaskFlow Development Team*
+*Built with ❤️ by the priyadharsan k*
