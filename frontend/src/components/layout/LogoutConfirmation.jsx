@@ -12,7 +12,9 @@ const LogoutConfirmation = () => {
       onClose={cancelLogout}
       title="Confirm Logout"
       footer={
-        <p>You can always log back in to access your organization's data.</p>
+        <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50/50 p-4 rounded-xl border border-slate-100 w-full justify-center">
+            <AlertCircle size={14} /> You can always log back in to access your organization&apos;s data.
+        </div>
       }
     >
       <div className="flex flex-col items-center text-center">

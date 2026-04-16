@@ -48,7 +48,8 @@ const SettingsPage = () => {
         setIsSaving(false);
       }, 1000);
       
-    } catch (err) {
+    } catch (error) {
+      console.error('Settings Update Error:', error);
       toast.error("Failed to update settings");
       setIsSaving(false);
     }

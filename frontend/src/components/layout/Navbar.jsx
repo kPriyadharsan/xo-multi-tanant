@@ -73,7 +73,7 @@ const Navbar = () => {
                               (user.name[0]).toUpperCase()
                           )}
                       </div>
-                      <span className="text-sm font-black text-slate-900 leading-none">{user.name.split(' ')[0]}</span>
+                      <span className="text-sm font-black themed-text leading-none">{user.name.split(' ')[0]}</span>
                   </div>
                   <Button variant="primary" className="shadow-indigo-600/20" onClick={() => navigate('/dashboard')}>Dashboard</Button>
                 </div>
@@ -109,9 +109,9 @@ const Navbar = () => {
             className="md:hidden absolute top-32 left-8 right-8 glass p-10 rounded-[2.5rem] space-y-8 border-white/20 shadow-2xl"
           >
             <div className="space-y-6 text-center">
-                <Link to="/" className="block text-2xl font-black text-slate-900" onClick={() => setIsOpen(false)}>Product</Link>
-                <Link to="/" className="block text-2xl font-black text-slate-900" onClick={() => setIsOpen(false)}>Solutions</Link>
-                <Link to="/" className="block text-2xl font-black text-slate-900" onClick={() => setIsOpen(false)}>Pricing</Link>
+                <Link to="/" className="block text-2xl font-black themed-text" onClick={() => setIsOpen(false)}>Product</Link>
+                <Link to="/" className="block text-2xl font-black themed-text" onClick={() => setIsOpen(false)}>Solutions</Link>
+                <Link to="/" className="block text-2xl font-black themed-text" onClick={() => setIsOpen(false)}>Pricing</Link>
             </div>
 
             <hr className="border-slate-100" />

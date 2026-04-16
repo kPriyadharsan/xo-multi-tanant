@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component {
           </div>
           <h1 className="text-3xl font-bold text-slate-900 mb-2">Something went wrong</h1>
           <p className="text-slate-500 max-w-md mb-8">
-            An unexpected error occurred. We've been notified and are working on a fix.
+            An unexpected error occurred. We&apos;ve been notified and are working on a fix.
           </p>
           <div className="flex gap-4">
             <Button 
@@ -39,9 +39,10 @@ class ErrorBoundary extends React.Component {
               Go to Homepage
             </Button>
           </div>
-          {process.env.NODE_ENV === 'development' && (
-            <div className="mt-12 p-6 bg-slate-900 rounded-2xl text-left overflow-auto max-w-4xl w-full">
-              <pre className="text-emerald-400 text-xs font-mono">
+          {import.meta.env.DEV && (
+            <div className="mt-12 p-6 bg-slate-900 rounded-2xl text-left overflow-auto max-w-4xl w-full border border-slate-800 shadow-2xl">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-4">Debug Output</p>
+              <pre className="text-pink-400 text-xs font-mono">
                 {this.state.error?.toString()}
               </pre>
             </div>

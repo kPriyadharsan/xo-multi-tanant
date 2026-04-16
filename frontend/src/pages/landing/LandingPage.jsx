@@ -26,7 +26,7 @@ const LandingPage = () => {
             <span className="text-sm font-bold text-slate-800 tracking-tight">Version 2.0 is now live</span>
             <div className="w-px h-3 bg-slate-300 mx-2" />
             <span className="text-xs font-semibold text-indigo-600 flex items-center gap-1 group cursor-pointer hover:gap-2 transition-all">
-              See what's new <ArrowRight size={12} />
+              See what&apos;s new <ArrowRight size={12} />
             </span>
           </div>
 
@@ -84,7 +84,7 @@ const LandingPage = () => {
 
       {/* Trust Bar */}
       <section className="mt-40 max-w-7xl mx-auto px-6 text-center">
-         <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-12">Empowering the world's most ambitious teams</p>
+         <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-12">Empowering the world&apos;s most ambitious teams</p>
          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
             {['Meta', 'Stripe', 'OpenAI', 'Amazon', 'Apple'].map(name => (
                <span key={name} className="text-2xl md:text-3xl font-black text-slate-900">{name}</span>
@@ -96,19 +96,19 @@ const LandingPage = () => {
       <section className="mt-60 max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {[
-            { icon: Globe, title: 'Multi-Tenant Core', desc: 'Enterprise-grade isolation for complex organizational structures.', color: 'indigo' },
-            { icon: Zap, title: 'Nitro Sync', desc: 'Proprietary sync engine for sub-100ms updates across the globe.', color: 'pink' },
-            { icon: Shield, title: 'Vault Security', desc: 'SOC2 compliant data encryption at rest and in transit.', color: 'purple' },
-            { icon: Sparkles, title: 'AI Assistant', desc: 'Automated task breakdown and smart effort estimations.', color: 'amber' },
-            { icon: Users, title: 'Team Sprints', desc: 'Fluid sprint planning with deeply integrated subtask tracking.', color: 'emerald' },
-            { icon: Layout, title: 'Omni View', desc: 'Seamlessly switch between Kanban, List, and Gantt charts.', color: 'sky' }
+            { icon: Globe, title: 'Multi-Tenant Core', desc: 'Enterprise-grade isolation for complex organizational structures.', color: 'indigo', colorClass: 'bg-indigo-500/10 text-indigo-600' },
+            { icon: Zap, title: 'Nitro Sync', desc: 'Proprietary sync engine for sub-100ms updates across the globe.', color: 'pink', colorClass: 'bg-pink-500/10 text-pink-600' },
+            { icon: Shield, title: 'Vault Security', desc: 'SOC2 compliant data encryption at rest and in transit.', color: 'purple', colorClass: 'bg-purple-500/10 text-purple-600' },
+            { icon: Sparkles, title: 'AI Assistant', desc: 'Automated task breakdown and smart effort estimations.', color: 'amber', colorClass: 'bg-amber-500/10 text-amber-600' },
+            { icon: Users, title: 'Team Sprints', desc: 'Fluid sprint planning with deeply integrated subtask tracking.', color: 'emerald', colorClass: 'bg-emerald-500/10 text-emerald-600' },
+            { icon: Layout, title: 'Omni View', desc: 'Seamlessly switch between Kanban, List, and Gantt charts.', color: 'sky', colorClass: 'bg-sky-500/10 text-sky-600' }
           ].map((f, i) => (
             <motion.div
               key={i}
               whileHover={{ y: -10 }}
               className="group p-10 rounded-[2.5rem] glass border-white/40 hover:bg-white hover:shadow-2xl transition-all duration-500"
             >
-              <div className={`w-16 h-16 bg-${f.color}-500/10 text-${f.color}-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
+              <div className={`w-16 h-16 ${f.colorClass} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
                 <f.icon size={32} />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-4">{f.title}</h3>

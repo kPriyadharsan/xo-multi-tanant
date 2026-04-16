@@ -78,7 +78,7 @@ const OverviewStats = () => {
             <div className="relative z-10">
               <p className="text-sm font-bold text-slate-400 mb-1.5 uppercase tracking-wide">{stat.label}</p>
               <div className="flex items-end justify-between">
-                <p className="text-4xl font-display font-black text-slate-900 leading-none">{stat.value}</p>
+                <p className="text-4xl font-display font-black themed-text leading-none">{stat.value}</p>
                 <span className="text-[10px] font-bold text-slate-400 mb-1">{stat.detail}</span>
               </div>
             </div>

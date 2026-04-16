@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Layout, AlignLeft, Flag, Tag, Users as UsersIcon, Sparkles, Loader2 } from 'lucide-react';
+import { X, Layout, AlignLeft, Flag, Tag, Users as UsersIcon, Sparkles, Loader2, Calendar } from 'lucide-react';
 import { Button, Input, Card } from '../ui';
 import api from '../../api/apiClient';
 import { generateTaskAI } from '../../api/aiService';
@@ -53,8 +53,8 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo', initialTas
         if (data.success) {
           setMembers(data.data);
         }
-      } catch (err) {
-        console.error('Failed to fetch members');
+      } catch (error) {
+        console.error('Failed to fetch members', error);
       }
     };
     if (isOpen) fetchMembers();
@@ -79,7 +79,8 @@ const TaskModal = ({ isOpen, onClose, onSave, initialStatus = 'todo', initialTas
             tags: [...new Set([...formData.tags, ...(result.tags || [])])]
         });
         toast.success("Task enhanced by AI!", { id: loadingToast });
-    } catch (err) {
+    } catch (error) {
+        console.error('AI Task Generation Error:', error);
         toast.error("AI enhancement failed. Please try again.", { id: loadingToast });
     } finally {
         setIsAiLoading(false);

@@ -11,7 +11,7 @@ const TaskView = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [fetchTasks]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -45,12 +45,12 @@ const TaskView = () => {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10 pb-20">
       {/* Header & Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900">Tasks</h2>
-          <p className="text-slate-500 mt-1">Manage and track your team's progress</p>
+          <h2 className="text-4xl font-display font-black themed-text tracking-tight">Tasks</h2>
+          <p className="text-slate-500 mt-2 font-medium">Manage and track your team&apos;s progress</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-3">

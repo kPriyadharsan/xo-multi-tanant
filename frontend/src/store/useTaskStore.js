@@ -85,13 +85,13 @@ const useTaskStore = create((set, get) => ({
         tasks: state.tasks.map(t => (t.id === taskId || t._id === taskId) ? response.data.data : t)
       }));
     } catch (error) {
+      console.error('Update Task Status Error:', error);
       set({ tasks: previousTasks });
       toast.error('Failed to update status');
     }
   },
 
   updateTask: async (taskId, taskData) => {
-    const previousTasks = get().tasks;
     // We don't do full optimistic update here as taskData might be complex
     try {
       const response = await taskApi.update(taskId, taskData);
@@ -119,6 +119,7 @@ const useTaskStore = create((set, get) => ({
       await taskApi.delete(taskId);
       toast.success('Task deleted');
     } catch (error) {
+      console.error('Delete Task Error:', error);
       set({ tasks: previousTasks });
       toast.error('Failed to delete task');
     }

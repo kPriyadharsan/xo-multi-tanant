@@ -12,12 +12,6 @@ import {
 import { motion } from 'framer-motion';
 
 const TaskCard = React.memo(({ task, onEdit, onUpdateStatus }) => {
-  const priorityColors = {
-    high: 'text-pink-600 bg-pink-50',
-    medium: 'text-amber-600 bg-amber-50',
-    low: 'text-emerald-600 bg-emerald-50'
-  };
-
   const statusColors = {
     todo: 'border-slate-200',
     'in-progress': 'border-indigo-200 bg-indigo-50/20',
@@ -56,7 +50,7 @@ const TaskCard = React.memo(({ task, onEdit, onUpdateStatus }) => {
           </div>
         </div>
 
-        <h4 className="font-bold text-slate-900 mb-1 leading-tight group-hover:text-indigo-600 transition-colors cursor-pointer" onClick={() => onEdit(task)}>{task.title}</h4>
+        <h4 className="font-bold themed-text mb-1 leading-tight group-hover:text-indigo-600 transition-colors cursor-pointer" onClick={() => onEdit(task)}>{task.title}</h4>
         <p className="text-sm text-slate-500 line-clamp-2 mb-4">{task.description}</p>
 
         {/* Task Progress (Subtasks) */}
@@ -119,4 +113,5 @@ const TaskCard = React.memo(({ task, onEdit, onUpdateStatus }) => {
   );
 });
 
+TaskCard.displayName = 'TaskCard';
 export default TaskCard;

@@ -26,8 +26,8 @@ const SignupPage = () => {
       const { data } = await authApi.signup(formData);
       login(data.user, data.token);
       navigate('/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Signup failed. Please try again.');
+    } catch (error) {
+      setError(error.response?.data?.message || 'Signup failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -52,7 +52,7 @@ const SignupPage = () => {
             </div>
           </Link>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-none mb-3">Create Workspace</h1>
-          <p className="text-slate-500 font-medium">Power up your team's productivity today.</p>
+          <p className="text-slate-500 font-medium">Power up your team&apos;s productivity today.</p>
         </div>
 
         <Card className="p-10 glass rounded-[3rem] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.1)] border-white/40">

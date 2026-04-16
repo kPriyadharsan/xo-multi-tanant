@@ -26,25 +26,31 @@
   --bg-main: #fcfcfd;
   --text-main: #0f172a;
   --text-muted: #64748b;
+  --text-sub: #94a3b8;
   --card-bg: #ffffff;
   --card-border: #e2e8f0;
   --selection: rgba(99, 102, 241, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
 }
 
 .dark {
   --bg-main: #020617;
   --text-main: #f1f5f9;
   --text-muted: #94a3b8;
+  --text-sub: #64748b;
   --card-bg: #0b1121;
   --card-border: rgba(30, 41, 59, 0.7);
   --input-bg: #0f172a;
   --primary-glow: rgba(139, 92, 246, 0.3);
   --selection: rgba(139, 92, 246, 0.3);
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
 }
 
 /* Base Styles */
 * {
-  @apply border-slate-200 transition-colors duration-200;
+  @apply border-slate-200 dark:border-slate-800 transition-colors duration-200;
 }
 
 ::selection {
@@ -64,25 +70,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Custom Utilities for Premium Look */
-@utility themed-bg-glass {
-  background-color: var(--bg-glass);
-  backdrop-filter: blur(16px) saturate(180%);
+@utility themed-bg {
+  background-color: var(--card-bg);
 }
 
-.dark @utility themed-bg-glass {
-  background-color: var(--bg-glass-dark);
+@utility themed-text {
+  color: var(--text-main);
+}
+
+@utility themed-border {
+  border-color: var(--card-border);
+}
+
+@utility themed-bg-glass {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(180%);
 }
 
 @utility glass {
   backdrop-filter: blur(16px) saturate(180%);
-  background-color: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-}
-
-.dark @utility glass {
-  background-color: rgba(15, 23, 42, 0.65);
-  border-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
 
 @utility text-gradient {
@@ -91,15 +100,11 @@ h1, h2, h3, h4, h5, h6 {
   background-image: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
 }
 
-@utility bg-gradient-premium {
-  background-image: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 50%, rgba(236, 72, 153, 0.05) 100%);
-}
-
 @utility glow-hover {
   @apply hover:shadow-[0_0_25px_-5px_rgba(99,102,241,0.4)];
 }
 
-/* Animations */
+/* Mesh Animation */
 @keyframes mesh {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -114,7 +119,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .dark @utility bg-mesh {
   background: linear-gradient(-45deg, #020617, #0b1121, #0f172a, #020617);
-  background-size: 400% 400%;
 }
 
 @keyframes blob {
@@ -139,17 +143,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full hover:bg-slate-300;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  @apply bg-slate-800 hover:bg-slate-700;
+  @apply bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700;
 }
 
 /* Dark Mode Forced Color Fixes */
-.dark .bg-slate-50, .dark .bg-slate-100/50 { background-color: rgba(255, 255, 255, 0.02) !important; }
-.dark .border-slate-100, .dark .border-slate-200/50 { border-color: rgba(255, 255, 255, 0.05) !important; }
-.dark .themed-bg { background-color: var(--card-bg) !important; }
-.dark .themed-border { border-color: var(--card-border) !important; }
-.dark .themed-text { color: var(--text-main) !important; }
+.dark .text-slate-900 { color: var(--text-main) !important; }
+.dark .text-slate-800 { color: var(--text-main) !important; }
+.dark .text-slate-700 { color: var(--text-main) !important; }
+.dark .text-slate-600 { color: var(--text-muted) !important; }
+.dark .text-slate-500 { color: var(--text-muted) !important; }
+.dark .bg-white { background-color: var(--card-bg) !important; }
+.dark .bg-slate-50 { background-color: rgba(255, 255, 255, 0.02) !important; }
+.dark .bg-slate-100 { background-color: rgba(255, 255, 255, 0.05) !important; }
+.dark .border-slate-100 { border-color: var(--card-border) !important; }
+.dark .border-slate-200 { border-color: var(--card-border) !important; }
+.dark .hover\:bg-slate-50:hover { background-color: rgba(255, 255, 255, 0.05) !important; }
+.dark .hover\:bg-white:hover { background-color: var(--card-bg) !important; }
+
+/* Custom Skeleton Theme */
+.react-loading-skeleton {
+  --base-color: #f1f5f9;
+  --highlight-color: #f8fafc;
+}
+
+.dark .react-loading-skeleton {
+  --base-color: #0f172a;
+  --highlight-color: #1e293b;
+}
 

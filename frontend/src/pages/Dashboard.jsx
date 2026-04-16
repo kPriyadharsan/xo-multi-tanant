@@ -16,7 +16,7 @@ const DashboardOverview = () => {
   useEffect(() => {
     fetchTasks();
     fetchLogs();
-  }, []);
+  }, [fetchTasks, fetchLogs]);
 
   const recentTasks = tasks.slice(0, 5);
 
@@ -38,7 +38,7 @@ const DashboardOverview = () => {
           <motion.h1 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-display font-black text-slate-900 tracking-tight leading-none"
+            className="text-4xl md:text-5xl font-display font-black themed-text tracking-tight leading-none"
           >
             Welcome back, <span className="text-gradient">{user?.name?.split(' ')[0]}</span>.
           </motion.h1>
@@ -68,7 +68,7 @@ const DashboardOverview = () => {
           
           <div className="flex items-center justify-between mb-10 relative z-10">
             <div>
-              <h3 className="text-2xl font-display font-black text-slate-900 tracking-tight">Recent Projects</h3>
+              <h3 className="text-2xl font-display font-black themed-text tracking-tight">Recent Projects</h3>
               <p className="text-xs font-bold text-slate-400 mt-1">High fidelity task monitoring</p>
             </div>
             <Button variant="ghost" className="text-xs font-black uppercase tracking-widest text-indigo-600 bg-indigo-50/50 hover:bg-indigo-600 hover:text-white transition-all">Pulse Feed</Button>
@@ -90,7 +90,7 @@ const DashboardOverview = () => {
                     {task.status === 'completed' ? <CheckCircle2 size={24} /> : <Clock size={24} />}
                   </div>
                   <div>
-                    <h5 className="font-black text-slate-900 leading-none mb-2 tracking-tight">{task.title}</h5>
+                    <h5 className="font-black themed-text leading-none mb-2 tracking-tight">{task.title}</h5>
                     <div className="flex items-center gap-3">
                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
                             task.priority === 'high' ? 'bg-pink-100 text-pink-600' : task.priority === 'medium' ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600'
@@ -121,7 +121,7 @@ const DashboardOverview = () => {
         <Card className="p-10 border-none shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden bg-slate-50 border border-slate-100/50">
           <div className="flex items-center gap-2 mb-10">
              <div className="w-1.5 h-6 bg-indigo-600 rounded-full" />
-             <h3 className="text-2xl font-display font-black text-slate-900 tracking-tight">Intelligence Feed</h3>
+             <h3 className="text-2xl font-display font-black themed-text tracking-tight">Intelligence Feed</h3>
           </div>
           
           <div className="space-y-10 relative before:absolute before:left-5 before:top-4 before:bottom-4 before:w-0.5 before:bg-indigo-100/50">
