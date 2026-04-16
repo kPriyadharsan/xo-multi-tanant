@@ -55,8 +55,8 @@ const ProfilePage = () => {
         updateUser(data.data);
         toast.success('Profile updated successfully!');
       }
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to update profile');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to update profile');
     } finally {
       setIsUpdating(false);
     }
@@ -70,15 +70,15 @@ const ProfilePage = () => {
         className="space-y-8 px-4"
       >
         <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-slate-900">Account Settings</h1>
-            <Button variant="ghost" className="text-pink-600 flex items-center gap-2" onClick={logout}>
+            <h1 className="text-4xl font-display font-black themed-text tracking-tight">Identity & Access</h1>
+            <Button variant="ghost" className="text-pink-600 flex items-center gap-2 hover:bg-pink-50 hover:text-pink-700 transition-colors" onClick={logout}>
                 <LogOut size={18} /> Logout
             </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Card */}
-          <Card className="p-8 text-center flex flex-col items-center border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-fit">
+          <Card className="p-8 text-center flex flex-col items-center border-none shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] h-fit bg-white">
             <div className="relative group">
               <div className="w-32 h-32 rounded-[2.5rem] bg-indigo-600 text-white flex items-center justify-center text-4xl font-bold shadow-2xl mb-6 overflow-hidden border-4 border-white">
                 {previewImage ? (
@@ -134,10 +134,10 @@ const ProfilePage = () => {
           </Card>
 
           {/* Form Area */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="p-8 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                    <User size={20} className="text-indigo-600" /> General Information
+          <div className="lg:col-span-2 space-y-8">
+            <Card className="p-8 border-none shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] bg-white">
+                <h3 className="text-2xl font-display font-black themed-text mb-8 flex items-center gap-3">
+                    <User size={24} className="text-indigo-600" /> General Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                     <Input 
@@ -160,9 +160,9 @@ const ProfilePage = () => {
                 </div>
             </Card>
 
-            <Card className="p-8 border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                    <Lock size={20} className="text-pink-600" /> Security
+            <Card className="p-8 border-none shadow-[0_20px_50px_-15px_rgba(0,0,0,0.05)] bg-white">
+                <h3 className="text-2xl font-display font-black themed-text mb-8 flex items-center gap-3">
+                    <Lock size={24} className="text-pink-600" /> Security
                 </h3>
                 <div className="space-y-6 text-left">
                    <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
