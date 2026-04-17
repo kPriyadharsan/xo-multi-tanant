@@ -82,15 +82,6 @@ const LandingPage = () => {
         </motion.div>
       </section>
 
-      {/* Trust Bar */}
-      <section className="mt-40 max-w-7xl mx-auto px-6 text-center">
-         <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-12">Empowering the world&apos;s most ambitious teams</p>
-         <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 dark:opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
-            {['Meta', 'Stripe', 'OpenAI', 'Amazon', 'Apple'].map(name => (
-               <span key={name} className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">{name}</span>
-            ))}
-         </div>
-      </section>
 
       {/* Features Grid */}
       <section className="mt-60 max-w-7xl mx-auto px-6">
