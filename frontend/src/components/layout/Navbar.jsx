@@ -39,7 +39,7 @@ const Navbar = () => {
             scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl' : 'bg-transparent'
         }`}>
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+            <div className="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
               <Zap size={22} fill="currentColor" />
             </div>
             <span className="text-2xl font-black tracking-tighter themed-text">
@@ -49,9 +49,9 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-10">
-            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-105 transition-all">Product</Link>
-            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-105 transition-all">Solutions</Link>
-            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-105 transition-all">Pricing</Link>
+            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:scale-105 transition-all w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-500 hover:after:w-full after:transition-all after:duration-300">Product</Link>
+            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:scale-105 transition-all w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-500 hover:after:w-full after:transition-all after:duration-300">Solutions</Link>
+            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:scale-105 transition-all w-fit relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-0.5 after:bg-emerald-500 hover:after:w-full after:transition-all after:duration-300">Pricing</Link>
             
             <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
@@ -65,8 +65,8 @@ const Navbar = () => {
 
               {user ? (
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-indigo-600/5 border border-indigo-600/10">
-                      <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-[10px] font-bold overflow-hidden cursor-pointer shadow-lg shadow-indigo-600/20" onClick={() => navigate('/dashboard')}>
+                  <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-emerald-600/5 border border-emerald-600/10">
+                      <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold overflow-hidden cursor-pointer shadow-lg shadow-emerald-600/20 hover:scale-110 transition-transform" onClick={() => navigate('/dashboard')}>
                           {user.profileImage ? (
                               <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
                           ) : (
@@ -75,14 +75,14 @@ const Navbar = () => {
                       </div>
                       <span className="text-sm font-black themed-text leading-none">{user.name.split(' ')[0]}</span>
                   </div>
-                  <Button variant="primary" className="shadow-indigo-600/20" onClick={() => navigate('/dashboard')}>Dashboard</Button>
+                  <Button variant="primary" className="shadow-emerald-500/20" onClick={() => navigate('/dashboard')}>Dashboard</Button>
                 </div>
               ) : (
                 <div className="flex items-center gap-4">
-                  <Link to="/login" className="text-sm font-bold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 px-4">Login</Link>
+                  <Link to="/login" className="text-sm font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 px-4 transition-colors">Login</Link>
                   <Button 
                     variant="primary" 
-                    className="shadow-indigo-600/20 py-3 px-8"
+                    className="shadow-emerald-500/20 py-3 px-8 hover:-translate-y-1 transition-all"
                     onClick={() => navigate('/signup')}
                    >
                     Join TaskFlow
@@ -130,7 +130,7 @@ const Navbar = () => {
             ) : (
               <div className="space-y-4">
                 <Button variant="secondary" className="w-full py-5 text-xl font-black glass" onClick={() => { navigate('/login'); setIsOpen(false); }}>Login</Button>
-                <Button className="w-full py-5 text-xl font-black shadow-indigo-600/20" onClick={() => { navigate('/signup'); setIsOpen(false); }}>Get Started</Button>
+                <Button className="w-full py-5 text-xl font-black shadow-emerald-500/20" onClick={() => { navigate('/signup'); setIsOpen(false); }}>Get Started</Button>
               </div>
             )}
           </motion.div>
