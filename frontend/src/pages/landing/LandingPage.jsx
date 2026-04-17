@@ -21,28 +21,28 @@ const LandingPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-white/40 mb-10 shadow-sm">
-            <Sparkles size={16} className="text-indigo-600" />
-            <span className="text-sm font-bold text-slate-800 tracking-tight">Version 2.0 is now live</span>
-            <div className="w-px h-3 bg-slate-300 mx-2" />
-            <span className="text-xs font-semibold text-indigo-600 flex items-center gap-1 group cursor-pointer hover:gap-2 transition-all">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-slate-200/50 dark:border-white/10 mb-10 shadow-sm">
+            <Sparkles size={16} className="text-indigo-600 dark:text-indigo-400" />
+            <span className="text-sm font-bold text-slate-800 dark:text-slate-200 tracking-tight">Version 2.0 is now live</span>
+            <div className="w-px h-3 bg-slate-300 dark:bg-slate-700 mx-2" />
+            <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 flex items-center gap-1 group cursor-pointer hover:gap-2 transition-all">
               See what&apos;s new <ArrowRight size={12} />
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight text-slate-900 leading-[0.9] mb-8">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight text-slate-900 dark:text-white leading-[0.9] mb-8">
             Work flows <br />
             <span className="text-gradient">smarter</span> now.
           </h1>
 
-          <p className="mt-8 text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="mt-8 text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-medium">
             The next generation of multi-tenant task management. 
             Automate your productivity with AI-driven insights and real-time collaboration.
           </p>
 
           <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
             <Button 
-                className="w-full sm:w-auto px-10 py-5 text-xl font-bold bg-indigo-600 hover:bg-slate-900 transition-all shadow-xl hover:shadow-indigo-500/25" 
+                className="w-full sm:w-auto px-10 py-5 text-xl font-bold bg-indigo-600 hover:bg-slate-900 dark:hover:bg-slate-800 transition-all shadow-xl hover:shadow-indigo-500/25" 
                 onClick={() => navigate('/signup')}
             >
               Get Started Free <ArrowRight className="inline-block ml-3" size={20} />
@@ -62,7 +62,7 @@ const LandingPage = () => {
           className="mt-32 relative group"
         >
           <div className="relative z-10 mx-auto max-w-5xl">
-            <div className="glass p-3 rounded-[2.5rem] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.1)] border-white/20">
+            <div className="glass p-3 rounded-[2.5rem] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.1)] dark:shadow-[0_32px_128px_-16px_rgba(0,0,0,0.5)] border-slate-200/50 dark:border-white/10">
                <div className="rounded-[1.8rem] overflow-hidden bg-slate-900 aspect-video relative">
                   <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-transparent" />
                   <div className="flex flex-col items-center justify-center h-full gap-4">
@@ -84,10 +84,10 @@ const LandingPage = () => {
 
       {/* Trust Bar */}
       <section className="mt-40 max-w-7xl mx-auto px-6 text-center">
-         <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.3em] mb-12">Empowering the world&apos;s most ambitious teams</p>
-         <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+         <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-12">Empowering the world&apos;s most ambitious teams</p>
+         <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 dark:opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
             {['Meta', 'Stripe', 'OpenAI', 'Amazon', 'Apple'].map(name => (
-               <span key={name} className="text-2xl md:text-3xl font-black text-slate-900">{name}</span>
+               <span key={name} className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">{name}</span>
             ))}
          </div>
       </section>
@@ -106,13 +106,13 @@ const LandingPage = () => {
             <motion.div
               key={i}
               whileHover={{ y: -10 }}
-              className="group p-10 rounded-[2.5rem] glass border-white/40 hover:bg-white hover:shadow-2xl transition-all duration-500"
+              className="group p-10 rounded-[2.5rem] glass border-slate-200/50 dark:border-white/10 hover:bg-white dark:hover:bg-slate-800/80 hover:shadow-2xl dark:hover:shadow-indigo-500/10 transition-all duration-500"
             >
               <div className={`w-16 h-16 ${f.colorClass} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
                 <f.icon size={32} />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-4">{f.title}</h3>
-              <p className="text-slate-600 leading-relaxed font-medium">{f.desc}</p>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">{f.title}</h3>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">{f.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -122,16 +122,16 @@ const LandingPage = () => {
       <section className="mt-60 px-6 pb-40">
         <div className="max-w-6xl mx-auto relative group">
            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-600 to-pink-600 rounded-[4rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
-           <div className="relative glass p-20 md:p-32 rounded-[4rem] text-center overflow-hidden border-white/20">
+           <div className="relative glass p-20 md:p-32 rounded-[4rem] text-center overflow-hidden border-slate-200/50 dark:border-white/10 shadow-2xl dark:shadow-none">
               <div className="relative z-10">
-                <h2 className="text-5xl md:text-8xl font-black text-slate-900 tracking-tighter mb-8 leading-[0.9]">
+                <h2 className="text-5xl md:text-8xl font-black text-slate-900 dark:text-white tracking-tighter mb-8 leading-[0.9]">
                    Ready for the <br/><span className="text-gradient">next level?</span>
                 </h2>
-                <p className="mt-8 text-xl text-slate-600 max-w-lg mx-auto font-medium mb-12">
+                <p className="mt-8 text-xl text-slate-600 dark:text-slate-400 max-w-lg mx-auto font-medium mb-12">
                    Experience the workflow revolution. No credit card required.
                 </p>
                 <Button 
-                    className="px-12 py-6 text-2xl font-black bg-slate-900 text-white hover:bg-indigo-600 transition-all shadow-2xl" 
+                    className="px-12 py-6 text-2xl font-black bg-slate-900 text-white hover:bg-indigo-600 dark:bg-white dark:text-slate-900 dark:hover:bg-indigo-50 dark:hover:text-indigo-600 transition-all shadow-2xl" 
                     onClick={() => navigate('/signup')}
                 >
                   Create Your Workspace

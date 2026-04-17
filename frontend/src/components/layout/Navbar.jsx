@@ -35,8 +35,8 @@ const Navbar = () => {
         scrolled ? 'py-4' : 'py-8'
     }`}>
       <div className="max-w-7xl mx-auto">
-        <div className={`glass px-8 py-3 rounded-[2rem] flex items-center justify-between border-white/20 shadow-xl transition-all duration-500 ${
-            scrolled ? 'bg-white/80 backdrop-blur-xl' : 'bg-transparent'
+        <div className={`glass px-8 py-3 rounded-[2rem] flex items-center justify-between border-white/20 dark:border-white/5 shadow-xl transition-all duration-500 ${
+            scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl' : 'bg-transparent'
         }`}>
           <Link to="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
@@ -49,16 +49,16 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-10">
-            <Link to="/" className="text-sm font-bold text-slate-500 hover:text-indigo-600 hover:scale-105 transition-all">Product</Link>
-            <Link to="/" className="text-sm font-bold text-slate-500 hover:text-indigo-600 hover:scale-105 transition-all">Solutions</Link>
-            <Link to="/" className="text-sm font-bold text-slate-500 hover:text-indigo-600 hover:scale-105 transition-all">Pricing</Link>
+            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-105 transition-all">Product</Link>
+            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-105 transition-all">Solutions</Link>
+            <Link to="/" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-105 transition-all">Pricing</Link>
             
-            <div className="h-6 w-px bg-slate-200" />
+            <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
             <div className="flex items-center gap-6">
               <button 
                 onClick={toggleTheme}
-                className="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition-all"
+                className="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"
               >
                 {isDark ? <Sun size={20} /> : <Moon size={20} />}
               </button>
@@ -79,7 +79,7 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-4">
-                  <Link to="/login" className="text-sm font-bold text-slate-900 hover:text-indigo-600 px-4">Login</Link>
+                  <Link to="/login" className="text-sm font-bold text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 px-4">Login</Link>
                   <Button 
                     variant="primary" 
                     className="shadow-indigo-600/20 py-3 px-8"
@@ -93,7 +93,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button className="md:hidden p-3 rounded-2xl glass border-white/40 text-slate-900" onClick={() => setIsOpen(!isOpen)}>
+          <button className="md:hidden p-3 rounded-2xl glass border-white/40 dark:border-white/10 text-slate-900 dark:text-white" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -106,7 +106,7 @@ const Navbar = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="md:hidden absolute top-32 left-8 right-8 glass p-10 rounded-[2.5rem] space-y-8 border-white/20 shadow-2xl"
+            className="md:hidden absolute top-32 left-8 right-8 glass p-10 rounded-[2.5rem] space-y-8 border-slate-200/50 dark:border-white/10 shadow-2xl"
           >
             <div className="space-y-6 text-center">
                 <Link to="/" className="block text-2xl font-black themed-text" onClick={() => setIsOpen(false)}>Product</Link>
@@ -114,7 +114,7 @@ const Navbar = () => {
                 <Link to="/" className="block text-2xl font-black themed-text" onClick={() => setIsOpen(false)}>Pricing</Link>
             </div>
 
-            <hr className="border-slate-100" />
+            <hr className="border-slate-100 dark:border-slate-800" />
             
             <div className="flex justify-center gap-4">
                 <button onClick={toggleTheme} className="w-full py-4 glass rounded-2xl flex items-center justify-center gap-2 font-bold">

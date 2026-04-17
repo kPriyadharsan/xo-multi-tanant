@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #6366f1;
   --color-primary-dark: #4f46e5;
@@ -117,8 +119,8 @@ h1, h2, h3, h4, h5, h6 {
   animation: mesh 15s ease infinite;
 }
 
-.dark @utility bg-mesh {
-  background: linear-gradient(-45deg, #020617, #0b1121, #0f172a, #020617);
+.dark .bg-mesh {
+  background: linear-gradient(-45deg, #020617, #0b1121, #0f172a, #020617) !important;
 }
 
 @keyframes blob {
