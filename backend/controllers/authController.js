@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 // @access  Public
 const register = async (req, res, next) => {
   try {
-    const { name, email, password, organizationName, organization: organizationAlias } = req.body;
+    const { name, email, password, organizationName, organization: organizationAlias, organizationId, expectedRole } = req.body;
     const finalOrgName = organizationName || organizationAlias;
 
     // Validate required fields
@@ -18,13 +18,32 @@ const register = async (req, res, next) => {
       });
     }
 
-    // Check if organization exists or create new one
+    // Check if organization exists
     let organization = await Organization.findOne({ name: finalOrgName });
-    if (!organization) {
+    let role = 'admin';
+
+    if (organization) {
+      // Must provide exact ID to join an existing workspace
+      if (!organizationId || organization._id.toString() !== organizationId) {
+         return res.status(401).json({
+            success: false,
+            message: 'To join an existing workspace, the Workspace Name and ID must match perfectly.'
+         });
+      }
+      role = expectedRole || 'member'; // Access will go for member/manager based on what's configured, default member
+    } else {
+      if (organizationId) {
+         return res.status(400).json({
+            success: false,
+            message: 'No existing workspace found with that Name to match the provided ID.'
+         });
+      }
+      // Create new organization
       organization = await Organization.create({
         name: finalOrgName,
         slug: finalOrgName.toLowerCase().split(' ').join('-')
       });
+      role = 'admin'; // First user is admin
     }
 
     // Create user
@@ -33,7 +52,7 @@ const register = async (req, res, next) => {
       email,
       password,
       organization: organization._id,
-      role: 'admin', // First user is admin
+      role: role,
       lastIp: req.ip,
       lastLogin: new Date()
     });
