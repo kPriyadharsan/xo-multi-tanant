@@ -77,6 +77,7 @@ const tasks = require('./routes/taskRoutes');
 const logs = require('./routes/activityRoutes');
 const ai = require('./routes/aiRoutes');
 const users = require('./routes/userRoutes');
+const notifications = require('./routes/notificationRoutes');
 
 // Mount routers
 app.use('/api/auth', auth);
@@ -84,14 +85,20 @@ app.use('/api/tasks', tasks);
 app.use('/api/logs', logs);
 app.use('/api/ai', ai);
 app.use('/api/users', users);
+app.use('/api/notifications', notifications);
 
 // Real-time Socket.io logic
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
   socket.on('joinOrganization', (orgId) => {
-    socket.join(orgId);
+    socket.join(`org_${orgId}`);
     console.log(`User joined organization: ${orgId}`);
+  });
+
+  socket.on('joinUser', (userId) => {
+    socket.join(`user_${userId}`);
+    console.log(`User signed into personal room: ${userId}`);
   });
 
   socket.on('disconnect', () => {

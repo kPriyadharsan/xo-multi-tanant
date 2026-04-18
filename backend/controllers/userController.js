@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const logActivity = require('../utils/logger');
+const { sendNotification } = require('../utils/notificationService');
 
 // @desc    Get all users in organization
 // @route   GET /api/users
@@ -55,6 +56,16 @@ const updateUserRole = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: user
+    });
+
+    // Notify the user about their role change
+    const io = req.app.get('io');
+    await sendNotification(io, {
+       user: user._id,
+       organization: req.user.organization,
+       title: 'Role Updated',
+       message: `Your role has been updated to ${role} by ${req.user.name || 'an Admin'}.`,
+       type: 'info'
     });
   } catch (err) {
     next(err);

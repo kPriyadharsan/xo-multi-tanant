@@ -1,5 +1,6 @@
 const Task = require('../models/Task');
 const logActivity = require('../utils/logger');
+const { sendNotificationToMultiple } = require('../utils/notificationService');
 
 // @desc    Get all tasks for user/organization
 // @route   GET /api/tasks
@@ -93,6 +94,21 @@ const createTask = async (req, res, next) => {
     const io = req.app.get('io');
     io.to(req.user.organization.toString()).emit('taskCreated', task);
 
+    // Send notifications to assigned users
+    if (task.assignedTo && task.assignedTo.length > 0) {
+      const usersToNotify = task.assignedTo.map(id => id.toString()).filter(id => id !== req.user.id);
+      if (usersToNotify.length > 0) {
+        await sendNotificationToMultiple(
+          io,
+          usersToNotify,
+          req.user.organization,
+          'New Task Assigned',
+          `${req.user.name || 'Someone'} assigned you to a new task: ${task.title}`,
+          'info'
+        );
+      }
+    }
+
     res.status(201).json({
       success: true,
       data: task
@@ -139,6 +155,21 @@ const updateTask = async (req, res, next) => {
 
     const io = req.app.get('io');
     io.to(req.user.organization.toString()).emit('taskUpdated', task);
+
+    // Send notifications to assigned users
+    if (task.assignedTo && task.assignedTo.length > 0) {
+      const usersToNotify = task.assignedTo.map(id => id.toString()).filter(id => id !== req.user.id);
+      if (usersToNotify.length > 0) {
+        await sendNotificationToMultiple(
+          io,
+          usersToNotify,
+          req.user.organization,
+          'Task Updated',
+          `A task you are assigned to was updated: ${task.title}`,
+          'info'
+        );
+      }
+    }
 
     res.status(200).json({
       success: true,

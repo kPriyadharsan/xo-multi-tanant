@@ -53,11 +53,16 @@ export const AuthProvider = ({ children }) => {
       const orgId = typeof user.organization === 'object' ? user.organization._id : user.organization;
       socket.connect();
       socket.emit('joinOrganization', orgId);
+      socket.emit('joinUser', user._id);
       
       // Import dynamic to avoid circular dependencies if any
       const setup = async () => {
          const { default: useTaskStore } = await import('../store/useTaskStore');
+         const { default: useNotificationStore } = await import('../store/useNotificationStore');
+         
          useTaskStore.getState().setupSocket();
+         useNotificationStore.getState().fetchNotifications();
+         useNotificationStore.getState().setupSocket();
       };
       setup();
 

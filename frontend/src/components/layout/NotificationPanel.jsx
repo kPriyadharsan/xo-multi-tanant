@@ -1,10 +1,14 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Bell, CheckCircle2, AlertCircle, Info, Trash2 } from 'lucide-react';
+import { X, Bell, CheckCircle2, AlertCircle, Info, Trash2, Check } from 'lucide-react';
 import useNotificationStore from '../../store/useNotificationStore';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 const NotificationPanel = ({ isOpen, onClose }) => {
-  const { notifications, markAsRead, clearAll } = useNotificationStore();
+  const { notifications, markAsRead, clearAll, markAllAsRead } = useNotificationStore();
 
   const typeIcons = {
     success: <CheckCircle2 className="text-emerald-500" size={18} />,
@@ -40,6 +44,9 @@ const NotificationPanel = ({ isOpen, onClose }) => {
                 )}
               </div>
               <div className="flex items-center gap-2">
+                <button onClick={markAllAsRead} className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 group" title="Mark All as Read">
+                  <Check size={18} className="group-hover:text-emerald-600 transition-colors" />
+                </button>
                 <button onClick={clearAll} className="p-2 hover:bg-slate-100 rounded-lg text-slate-400 group" title="Clear All">
                   <Trash2 size={18} className="group-hover:text-pink-600 transition-colors" />
                 </button>
@@ -53,19 +60,19 @@ const NotificationPanel = ({ isOpen, onClose }) => {
               {notifications.length > 0 ? (
                 notifications.map((n) => (
                   <motion.div
-                    key={n.id}
+                    key={n._id || n.id}
                     layout
-                    onClick={() => markAsRead(n.id)}
+                    onClick={() => markAsRead(n._id || n.id)}
                     className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                       n.read ? 'themed-bg themed-border' : 'bg-indigo-600/5 border-indigo-600/20 shadow-sm'
                     }`}
                   >
                     <div className="flex items-start gap-3">
-                      <div className="mt-1">{typeIcons[n.type]}</div>
+                      <div className="mt-1">{typeIcons[n.type] || <Info className="text-indigo-500" size={18} />}</div>
                       <div className="flex-1">
                         <p className={`text-sm font-bold ${n.read ? 'themed-text opacity-80' : 'themed-text font-bold'}`}>{n.title}</p>
                         <p className="text-xs opacity-60 mt-1 leading-relaxed">{n.message}</p>
-                        <p className="text-[10px] opacity-40 mt-2 font-medium">{n.time}</p>
+                        <p className="text-[10px] opacity-40 mt-2 font-medium">{n.createdAt ? dayjs(n.createdAt).fromNow() : n.time}</p>
                       </div>
                       {!n.read && <div className="w-2 h-2 rounded-full bg-indigo-600 mt-1.5" />}
                     </div>
