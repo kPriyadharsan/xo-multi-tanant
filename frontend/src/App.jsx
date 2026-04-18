@@ -44,18 +44,27 @@ function App() {
 
   return (
     <AuthProvider>
-      <Toaster 
-        position="top-right"
+      <Toaster
+        position="bottom-right"
+        gutter={12}
         toastOptions={{
           duration: 4000,
           style: {
-            background: '#fff',
+            background: 'rgba(255,255,255,0.85)',
             color: '#1e293b',
-            padding: '16px',
+            padding: '14px 18px',
             borderRadius: '16px',
-            boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)',
             fontSize: '14px',
-            fontWeight: '600'
+            fontWeight: '500',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.6)',
+          },
+          success: {
+            iconTheme: { primary: '#10b981', secondary: '#fff' },
+          },
+          error: {
+            iconTheme: { primary: '#f43f5e', secondary: '#fff' },
           },
         }}
       />
